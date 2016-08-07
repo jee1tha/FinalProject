@@ -6,6 +6,7 @@ import org.encog.app.analyst.AnalystFileFormat;
 import org.encog.app.analyst.EncogAnalyst;
 import org.encog.app.analyst.csv.normalize.AnalystNormalizeCSV;
 import org.encog.app.analyst.wizard.AnalystWizard;
+import org.encog.util.arrayutil.NormalizationAction;
 import org.encog.util.csv.CSVFormat;
 
 public class ecog {
@@ -13,12 +14,10 @@ public class ecog {
 	public static void main(String[] args) {
 		
 		
-		
-		ecogTest();
-		
+		ecogNormalization();
 	}
 	
-	public static void ecogTest(){
+	public static void ecogNormalization(){
 		File sourceFile = new File("source.txt");
 		File targetFile = new File("target.txt");
 		
