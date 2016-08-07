@@ -28,5 +28,12 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-2.92/neuroph-adapters-2.92.jar"/>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-2.92/neuroph-contrib-2.92.jar"/>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-2.92/neuroph-core-2.92.jar"/>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-2.92/neuroph-imgrec-2.92.jar"/>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-2.92/neuroph-ocr-2.92.jar"/>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-2.92/neuroph-samples-2.92.jar"/>
+	<classpathentry kind="lib" path="C:/My Stuff/Assignments/Final/libraries/neuroph-core-2.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
