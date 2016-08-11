@@ -13,13 +13,13 @@ import java.sql.Statement;
  *
  * @author VABAYJE
  */
-public class dbHandler {
+public class DBHandler {
     
     public static void main(String[] args){
         String query = null;
         query = "INSERT INTO ingrow.applicant (name,birthDate,ContactNo,email,username,password )"
-                + "VALUES('jeewantha','01/01/0001','00000000','asd@gmail.com','username','password')";
-        dbHandler b = new dbHandler();
+                + "VALUES('jeewantha','01/01/0001','00000000','asd@gmail.com','username1','password')";
+        DBHandler b = new DBHandler();
         try{
         System.out.println(b.insert(query));
     }catch(Exception e){

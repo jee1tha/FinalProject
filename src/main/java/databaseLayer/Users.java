@@ -1,9 +1,9 @@
-package classes;
+package databaseLayer;
 
 public class Users {
 
 	private String name;
-	private int contactNo;
+	private String contactNo;
 	private String email;
 	private String username;
 	private String password;
@@ -15,10 +15,10 @@ public class Users {
 		this.name = name;
 	}
 	
-	public int getContactNo() {
+	public String getContactNo() {
 		return contactNo;
 	}
-	public void setContactNo(int contactNo) {
+	public void setContactNo(String contactNo) {
 		this.contactNo = contactNo;
 	}
 	

@@ -1,9 +1,17 @@
-package classes;
+package databaseLayer;
 
 public class Admin extends Users {
-
+	
+	private int adminID;
 	private String empNo;
 	private String joinedDate;
+	
+	public int getAdminID() {
+		return adminID;
+	}
+	public void setAdminID(int adminID) {
+		this.adminID = adminID;
+	}
 	
 	public String getEmpNo() {
 		return empNo;
