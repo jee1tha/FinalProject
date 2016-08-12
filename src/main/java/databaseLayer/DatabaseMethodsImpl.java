@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 public class DatabaseMethodsImpl implements DatabaseMethods{
 	
-	private static final Logger log = Logger.getLogger(log4jtest.class);
+	private static final Logger log = Logger.getLogger(DatabaseMethodsImpl.class);
 	 
 	public static void main(String[] args){
 //		//testing applicant
