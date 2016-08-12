@@ -1,0 +1,4 @@
+2016-08-12 08:28:18 DEBUG log4jtest:247 - get skills failed : 
+java.lang.NullPointerException
+	at databaseLayer.DatabaseMethodsImpl.getSkillDetails(DatabaseMethodsImpl.java:240)
+	at databaseLayer.DatabaseMethodsImpl.main(DatabaseMethodsImpl.java:32)

@@ -4,11 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DatabaseMethodsImpl implements DatabaseMethods{
+import org.apache.log4j.Logger;
 
+public class DatabaseMethodsImpl implements DatabaseMethods{
+	
+	private static final Logger log = Logger.getLogger(log4jtest.class);
+	 
 	public static void main(String[] args){
 //		//testing applicant
-//		Applicants app= new Applicants();
+		Applicants app= new Applicants();
 //		app.setName("testingconnection");
 //		app.setBirthDate("09/02/2291");
 //		app.setContactNo("0881231231");
@@ -16,7 +20,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 //		app.setNicNo("0010101010v");
 	//	app.setUsername("TestingConnection");
 //		app.setPassword("testingConnectionPassword");
-//		app.setAppID(1);
+	//	app.setAppID(1);
 //
 //		// testing skills
 //		Skills ski = new Skills();
@@ -25,10 +29,10 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 //		n.add("skill1");
 //		n.add("skill2");
 //		ski.setSkillName(n);
-//		DatabaseMethodsImpl b = new DatabaseMethodsImpl();
+		DatabaseMethodsImpl b = new DatabaseMethodsImpl();
 ////		System.out.println(	b.addSkills(app, ski));
-//		System.out.println(b.getSkillDetails(app).get(0).getSkill());
-//		System.out.println(b.getSkillDetails(app).get(1).getSkill());
+		System.out.println(b.getSkillDetails(app).get(0).getSkill());
+		System.out.println(b.getSkillDetails(app).get(1).getSkill());
 ////		//testing admin
 //		Admin n = new Admin();
 //		 n.setName("testingconnection");
@@ -70,17 +74,19 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 			try {
                 result = newDB.insert(query);
             } catch (Exception e) {
-                System.out.print(e.toString());
+            	log.debug("add applicant query failed : ", e);
             }
 			
 		}catch (Exception e){
-			 e.printStackTrace();
+			log.debug("add applicant failed : ", e);
 		}
 		 return result;
 	}
 	
 	public int addAdmin(Admin admin){
+		
 		int result = 0;
+		
 		DBHandler newDB = new DBHandler(); // Creating object to get the database connection method
 		
 		try {
@@ -102,14 +108,17 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 
 	          
 			try {
+				
                 result = newDB.insert(query);
+                
             } catch (Exception e) {
-                System.out.print(e.toString());
+            	
+            	log.debug("insert admin query failed : ", e);
+            	
             }
 			
 		}catch (Exception e){
-			 e.printStackTrace();
-		}
+			log.debug("add admin failed : ", e);		}
 		
 		return result;
 	}
@@ -125,7 +134,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 			try{ 
 				result = newDB.insert(query);
 			} catch (Exception ex){
-				ex.printStackTrace();
+				log.debug("add skills failed : ", ex);
 			}
 		}
 		
@@ -148,8 +157,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 		
 			
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			log.debug("getting applicant username from db failed: ", e1);
 				}
 		try{
 			if(username.equals(check)){
@@ -158,7 +166,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 			}
 	
 	}catch (Exception e){
-		e.printStackTrace();
+		log.debug("check Applicant username failed : ", e);
 	}
 		return result;
 	}
@@ -186,7 +194,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
         	appArray.add(a);
         }
 	}catch (Exception e){
-		e.printStackTrace();
+		log.debug("get applicant details failed : ", e);
 	}
 	    
 	    return appArray;
@@ -216,7 +224,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
         	adminArray.add(a);
         }
 	}catch (Exception e){
-		e.printStackTrace();
+		log.debug("get admin details failed : ", e);
 	}
 	    
 	    return adminArray;
@@ -229,7 +237,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 		
 		if(app.getAppID() != 0){
 			query = "Select * from skills where applicantID = '"+ app.getAppID()+ "'";
-			}
+		}
 	    DBHandler con = new DBHandler();
 	    
 	    try{
@@ -242,7 +250,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
         	skillsArray.add(a);
         }
 	}catch (Exception e){
-		e.printStackTrace();
+		log.debug("get skills failed : ", e);
 	}
 	    
 	    return skillsArray;
