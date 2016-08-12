@@ -12,7 +12,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 	 
 	public static void main(String[] args){
 //		//testing applicant
-		Applicants app= new Applicants();
+//		Applicants app= new Applicants();
 //		app.setName("testingconnection");
 //		app.setBirthDate("09/02/2291");
 //		app.setContactNo("0881231231");
@@ -20,7 +20,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 //		app.setNicNo("0010101010v");
 	//	app.setUsername("TestingConnection");
 //		app.setPassword("testingConnectionPassword");
-	//	app.setAppID(1);
+//		app.setAppID(1);
 //
 //		// testing skills
 //		Skills ski = new Skills();
@@ -29,11 +29,15 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 //		n.add("skill1");
 //		n.add("skill2");
 //		ski.setSkillName(n);
-		DatabaseMethodsImpl b = new DatabaseMethodsImpl();
-////		System.out.println(	b.addSkills(app, ski));
-		System.out.println(b.getSkillDetails(app).get(0).getSkill());
-		System.out.println(b.getSkillDetails(app).get(1).getSkill());
-////		//testing admin
+//		DatabaseMethodsImpl b = new DatabaseMethodsImpl();
+//		System.out.println(	b.addSkills(app, ski));
+//		try{
+//		System.out.println(b.getSkillDetails(app).get(0).getSkill());
+//		}catch (Exception a){
+//			log.debug("top level failure : ", a);
+//		}
+//		System.out.println(b.getSkillDetails(app).get(1).getSkill());
+//		//testing admin
 //		Admin n = new Admin();
 //		 n.setName("testingconnection");
 //		
@@ -236,7 +240,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods{
 		ArrayList<Skills> skillsArray = new ArrayList<Skills>();
 		
 		if(app.getAppID() != 0){
-			query = "Select * from skills where applicantID = '"+ app.getAppID()+ "'";
+			query = "Select * from skills where applicantID = '"+ app.getUsername()+ "'";
 		}
 	    DBHandler con = new DBHandler();
 	    
