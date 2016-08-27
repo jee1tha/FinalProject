@@ -2,9 +2,9 @@ package databaseLayer;
 
 public class Applicants extends Users{
 
-	private String nicNo;
-	private String birthDate;
-	private int appID;
+	private String nicNo = null;
+	private String birthDate = null;
+	private int appID = 0;
 	
 	public int getAppID() {
 		return appID;
