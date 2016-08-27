@@ -6,6 +6,14 @@ public class Skills {
 	 private int skillID; 
 	 private ArrayList<String>  skillName;
 	 private String skill;
+	 private boolean seligibility;
+	 
+	 public boolean getSeligibility() {
+		return seligibility;
+	}
+	 public void setSeligibility(boolean seligibility) {
+		this.seligibility = seligibility;
+	}
 	 
 	 public String getSkill() {
 		return skill;

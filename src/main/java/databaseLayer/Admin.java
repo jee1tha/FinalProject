@@ -2,9 +2,9 @@ package databaseLayer;
 
 public class Admin extends Users {
 	
-	private int adminID;
-	private String empNo;
-	private String joinedDate;
+	private int adminID = 0;
+	private String empNo = null;
+	private String joinedDate = null;
 	
 	public int getAdminID() {
 		return adminID;
@@ -26,4 +26,6 @@ public class Admin extends Users {
 	public void setJoinedDate(String joinedDate) {
 		this.joinedDate = joinedDate;
 	}
+	
+
 }

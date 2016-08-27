@@ -1,5 +1,1 @@
-2016-08-12 08:38:17 DEBUG DatabaseMethodsImpl:37 - top level failure : 
-java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-	at java.util.ArrayList.rangeCheck(ArrayList.java:635)
-	at java.util.ArrayList.get(ArrayList.java:411)
-	at databaseLayer.DatabaseMethodsImpl.main(DatabaseMethodsImpl.java:35)
+2016-08-27 07:24:36 DEBUG DatabaseMethodsImpl:563 - insert qualification query executed

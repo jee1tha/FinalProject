@@ -16,16 +16,16 @@ import java.sql.Statement;
 public class DBHandler {
     
     public static void main(String[] args){
-        String query = null;
-        query = "INSERT INTO ingrow.applicant (name,birthDate,ContactNo,email,username,password )"
-                + "VALUES('jeewantha','01/01/0001','00000000','asd@gmail.com','username1','password')";
-        DBHandler b = new DBHandler();
-        try{
-        System.out.println(b.insert(query));
-    }catch(Exception e){
-        System.out.println("exception :" + e);
-    }
-    }
+//        String query = null;
+//        query = "INSERT INTO ingrow.applicant (name,birthDate,ContactNo,email,username,password )"
+//                + "VALUES('jeewantha','01/01/0001','00000000','asd@gmail.com','username1','password')";
+//        DBHandler b = new DBHandler();
+//        try{
+//        System.out.println(b.insert(query));
+//    }catch(Exception e){
+//        System.out.println("exception :" + e);
+//    }
+  }
     
     public int insert(String query) throws Exception {
           
