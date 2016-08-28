@@ -5,6 +5,8 @@
  */
 package databaseLayer;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import junit.framework.TestCase;
 import org.junit.FixMethodOrder;
@@ -72,8 +74,20 @@ public class DatabaseMethodsImplTest extends TestCase {
         Applicants app = new Applicants();
         app.setUsername("UnitTestingUsername");
         DatabaseMethodsImpl instance = new DatabaseMethodsImpl();
-        int appID =instance.getApplicantDetails(app).get(0).getAppID();
-        app.setAppID(appID);
+        ResultSet resultset=instance.getApplicantDetails(app);
+        int id=0;
+        try {
+			while(resultset.next()){
+				id = Integer.parseInt(resultset.getString("description"));
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        app.setAppID(id);
         int expResult = 1;
         int result = instance.deleteApplicant(app);
         assertEquals(expResult, result);

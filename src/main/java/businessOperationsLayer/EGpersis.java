@@ -56,7 +56,7 @@ public class EGpersis {
 		
 		
 		
-		System.out.println("Training XOR network under 1% error rate.");
+		System.out.println("Training skill model network under 1% error rate.");
 		
 		
 		
