@@ -595,6 +595,10 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (skill.getSeligibility() == true ) {
 				query = "Select * from  `ingrow`.`skill` WHERE seligibility = '1' ";
 			}
+			if (skill.getSeligibility() == false ) {
+				query = "Select * from  `ingrow`.`skill` WHERE seligibility = '0' ";
+			}
+			
 			try {
 
 				results = newDb.getdata(query);
