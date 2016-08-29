@@ -48,7 +48,7 @@ public class EGpersis {
 	public static final String FILENAME = "network.eg";
 	public static void main(String[] args) {
 		EGpersis g = new EGpersis();
-	//	g.trainAndSave();
+		g.trainAndSave();
 		g.loadAndEvaluate();
 	}
 	
