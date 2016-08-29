@@ -554,8 +554,8 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		try {
 			
 			
-			String query = "INSERT INTO `ingrow`.`educationqualifications`(`institute`,`name`,`eeligibility`)VALUES('"+ qualification.getInstitute() 
-				+"','"+ qualification.getName() +"','"+ boo + "')";
+			String query = "INSERT INTO `ingrow`.`educationqualifications`(`institute`,`name`,`class`,`eeligibility`)VALUES('"+ qualification.getInstitute() 
+				+"','"+ qualification.getName() +"','"+qualification.getqClass()+"','"+ boo + "')";
 
 			try {
 
@@ -692,6 +692,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (qualification.getInstitute() != null && qualification.getName() != null ) {
 				query = "Select * from  `ingrow`.`educationqualifications` WHERE institute = '"+ qualification.getInstitute()
 						+"' AND name = '"+qualification.getName()+"'";
+			}
+			if (qualification.getQualificationsEligibility() == false && qualification.getInstitute() == null && qualification.getId() == 0 && qualification.getName() == null) {
+				query = "Select * from  `ingrow`.`educationqualifications` WHERE eeligibility = '0' ";
 			}
 			
 		
@@ -863,17 +866,15 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 	public int addApplicantQualifcations(Applicants app, Qualifications qualification) {
 		int result = 0;
-		int eli =0;
+		
 		DBHandler newDb = new DBHandler();
 
 		// Creating object to get the database connection method
-		if(qualification.getClassEligibility() == true){
-			eli = 1;
-		}
+		
 		try {
 
-			String query = "INSERT INTO `ingrow`.`usereducationalqualifications`(`id`,	`eid`,`uqeligibility`)	VALUES	('"+app.getAppID()
-							+"','"+ qualification.getId() +"','"+ eli +"')";
+			String query = "INSERT INTO `ingrow`.`usereducationalqualifications`(`id`,	`eid`)	VALUES	('"+app.getAppID()
+							+"','"+ qualification.getId() +"')";
 			try {
 
 				result = newDb.insert(query);
@@ -999,7 +1000,37 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 	public ResultSet getApplicantQualifications(Applicants app) {
 
-		return null;
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getAppID() != 0) {
+				query = "Select eid from  `ingrow`.`usereducationalqualifications` WHERE id ='" + app.getAppID() + "'";
+			}
+			
+		
+			try {
+
+				results = newDb.getdata(query);
+
+				log.debug("get user qualifications query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get user qualifications query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get user qualifications failed : ", e);
+
+		}
+
+		return results;
 	}
 
 	public ResultSet getApplicantSkills(Applicants app) {
