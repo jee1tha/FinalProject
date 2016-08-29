@@ -57,14 +57,12 @@ public class NNQualificationsModel implements NNModels{
 			while (qualifcationsFalse.next()) {
 				rowCal2++;
 			}
-		/*	while (qualifcationsFalse.next()) {
-				rowCal++;
-			}*/
+	
 		} catch (SQLException e2) {
 
 			log.debug("Failed to retrive qualifications eligible", e2);
 		}
-		int count1  = rowCal / 2; // determining the list parent array size // ERROR HERE
+		int count1  = rowCal / 2; // determining the list parent array size // 
 		int count2 = rowCal2 / 2 ;
 		if(rowCal % 2 != 0){
 			count1++ ;
