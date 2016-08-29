@@ -897,12 +897,12 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 	public int addApplicantJob(Applicants app,Job job){
 		int result = 0;
-		int eli = 0;
+		double eli = 0;
 		DBHandler newDb = new DBHandler();
 
 		// Creating object to get the database connection method
-		if(job.geteligibility() == true){
-			eli = 1;
+		if(job.geteligibility() != 0){
+			eli = job.geteligibility() ;
 		}
 		try {
 
@@ -998,13 +998,43 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 	}
 
 	public ResultSet getApplicantQualifications(Applicants app) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	public ResultSet getApplicantSkills(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getAppID() != 0) {
+				query = "Select sid from  `ingrow`.`skillsuser` WHERE id ='" + app.getAppID() + "'";
+			}
+			
+		
+			try {
+
+				results = newDb.getdata(query);
+
+				log.debug("get userskills query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get userskills query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get userskills failed : ", e);
+
+		}
+
+		return results;
 	}
 
 	public ResultSet getApplicantExperience(Applicants app) {

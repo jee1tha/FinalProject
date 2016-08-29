@@ -17,146 +17,173 @@ import org.encog.persist.EncogDirectoryPersistence;
 
 import databaseLayer.DatabaseMethodsImpl;
 import databaseLayer.Skills;
+import databaseLayer.*;
 
-public class NNSkillModel {
+public class NNSkillModel implements NNModels {
 
-	
-	
-	public static double USER_INPUT[] ;
-	
 	public static final String FILENAME = "skills_network.eg";
-	
+
 	private static final Logger log = Logger.getLogger(NNSkillModel.class);
-	
+
 	public static void main(String[] args) {
-		NNSkillModel g = new NNSkillModel();
-		
-	g.trainAndSaveSkillsModel();
-		//g.loadAndEvaluate();
+		/*
+		 * NNSkillModel g = new NNSkillModel(); DatabaseMethodsImpl d = new
+		 * DatabaseMethodsImpl(); Applicants aa = new Applicants();
+		 * aa.setAppID(5);
+		 * 
+		 * 
+		 * //g.trainAndSaveModel();
+		 * 
+		 * System.out.println("Network Skills output: " +
+		 * g.loadAndEvaluateModel(aa) + " (should be close to 0.0)");
+		 */
 	}
-	
-	public void trainAndSaveSkillsModel(){
-		double SKILL_INPUT[][] =  new double[10][5] ; 
-		double  SKILL_IDEAL[][] = new double[10][1] ; 
+
+	public void trainAndSaveModel() {
+
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
-		Skills skill = new Skills();
-		
-		
+
 		// getting skills with eligibility true
-		
+
+		Skills skill = new Skills();
 		skill.setSeligibility(true);
-		
-		
 		ResultSet skillsRS = null;
 		skillsRS = db.getSkills(skill);
-		
-		// add retrieved skills to input and ideal out put arrays
-		int j = 0 ;
-		int i =0;
-		try {
-			while(skillsRS.next()){
-				
-				
-				
-				if(i>=4){
-					i =0;
-					
-					SKILL_IDEAL[j][i]=1.0;
-					
-					j++;
-				}
-				String r = skillsRS.getString("sid") ;
-				Double e = Double.parseDouble(r)/1000; 
-				
-				SKILL_INPUT[j][i]=e ;
-				
-				i++;
-			}
-			
-			log.debug("Retrieved Skills eligible");
-			
-		} catch (SQLException e1) {
-			
-			log.debug("Failed to retrive Skills eligible",e1);
-		}
-		
-		
-		// Retrieving skills with eligibility false 
-		
-		Skills skillFalse = new Skills();
-		
+
 		// getting skills with eligibility false
-		
+
+		Skills skillFalse = new Skills();
 		skillFalse.setSeligibility(false);
-		
 		ResultSet skillFalseRS = null;
-		
-		skillFalseRS = db.getSkills(skillFalse) ;
-		int z = 0 ;
+		skillFalseRS = db.getSkills(skillFalse);
+
+		int rowCal = 0; // calculating no of rows to initiate List
 		try {
-			while(skillFalseRS.next()){
-				
-				if(z>=4){
-					z =0;
-					SKILL_IDEAL[j][z] = (double) 0;
+			while (skillsRS.next()) {
+				rowCal++;
+			}
+			while (skillFalseRS.next()) {
+				rowCal++;
+			}
+		} catch (SQLException e2) {
+
+			log.debug("Failed to retrive Skills eligible", e2);
+		}
+
+		int count = rowCal / 5; // determining the list parent array size
+
+		double SKILL_INPUT[][] = new double[count][5]; // 5 input neurons
+		double SKILL_IDEAL[][] = new double[count][1]; // 1 input neuron
+		// add retrieved skills to input and ideal out put arrays
+		int j = 0;
+		int i = 0;
+		try {
+			skillsRS.beforeFirst();
+			while (skillsRS.next()) {
+
+				if (i == 4) {
+					SKILL_IDEAL[j][0] = 1.0;
+				}
+
+				String r = skillsRS.getString("sid");
+				SKILL_INPUT[j][i] = Double.parseDouble(r) / 1000;
+				i++;
+
+				if (i > 4) {
+					i = 0;
+
 					j++;
 				}
-					SKILL_INPUT[j][z] = Double.parseDouble(skillFalseRS.getString("sid")) / 1000;
-					z++;
-				}
-			log.debug("Retrieved Skills NOT eligible");
-			
-			} catch (SQLException e1) {
-				
-			log.debug("Failed to retrive Skills NOT eligible",e1);
-			
 			}
-		
+
+			log.debug("Retrieved Skills eligible");
+
+		} catch (SQLException e1) {
+
+			log.debug("Failed to retrive Skills eligible", e1);
+		}
+
+		int z = 0;
+		try {
+			skillFalseRS.beforeFirst();
+			while (skillFalseRS.next()) {
+
+				if (z == 4) {
+					SKILL_IDEAL[j][0] = (double) 0;
+				}
+				SKILL_INPUT[j][z] = Double.parseDouble(skillFalseRS.getString("sid")) / 1000;
+				z++;
+				if (z > 4) {
+					z = 0;
+
+					j++;
+				}
+			}
+			log.debug("Retrieved Skills NOT eligible");
+
+		} catch (SQLException e1) {
+
+			log.debug("Failed to retrive Skills NOT eligible", e1);
+
+		}
+
 		System.out.println("Training skill model network under 1% error rate.");
 		log.debug("Training skill model network under 1% error rate, 5 input neurons and 1 output neuron.");
-		
-		
+
 		BasicNetwork networkSkills = new BasicNetwork();
 		networkSkills.addLayer(new BasicLayer(5));
 		networkSkills.addLayer(new BasicLayer(6));
 		networkSkills.addLayer(new BasicLayer(1));
 		networkSkills.getStructure().finalizeStructure();
 		networkSkills.reset();
-		
-		// training data set
-		
-		try{
-		MLDataSet trainingSet = new BasicMLDataSet(SKILL_INPUT,SKILL_IDEAL);
-		
-		final Propagation  train =  new Backpropagation(networkSkills, trainingSet);
-		int epoch = 1;
-		do {
-			train.iteration();
-			System.out.println("Epoch #" + epoch + 
-                    " Error:" + train.getError());
-					epoch++;
 
-		} while (train.getError() > 0.001);
-		
-		double e = networkSkills.calculateError(trainingSet);
-		System.out.println("Network Skills trained to error :" + e);
-		System.out.println("Saving Network (Skills) ");
-		
-		
-		EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
-	}catch (Exception e){
-		log.debug("Training Skill Network failed",e);
+		// training data set
+
+		try {
+			MLDataSet trainingSet = new BasicMLDataSet(SKILL_INPUT, SKILL_IDEAL);
+
+			final Propagation train = new Backpropagation(networkSkills, trainingSet);
+			int epoch = 1;
+			do {
+				train.iteration();
+				System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+				epoch++;
+
+			} while (train.getError() > 0.001);
+
+			double e = networkSkills.calculateError(trainingSet);
+			System.out.println("Network Skills trained to error :" + e);
+			System.out.println("Saving Network (Skills) ");
+
+			EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
+			log.debug("Training Skill Network success at Epoch #" + epoch);
+		} catch (Exception e) {
+			log.debug("Training Skill Network failed", e);
+		}
 	}
-	}
-	
-	public void loadAndEvaluate(){
+
+	public double loadAndEvaluateModel(Applicants app) {
+
+		DatabaseMethodsImpl d = new DatabaseMethodsImpl();
+		ResultSet rz = d.getApplicantSkills(app);
+		double user[] = new double[5];
+		try {
+			int s = 0;
+			while (rz.next()) {
+				int w = rz.getInt("sid");
+				user[s] = (double) w / 1000;
+				s++;
+			}
+		} catch (SQLException e) {
+			log.debug("Reading Skills of user from DB failed at loadandEvaluate Method", e);
+		}
 		System.out.println("Loading Network Skills ");
 		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(FILENAME));
-		
-		double[] output = new double[1];
-		network.compute(USER_INPUT, output);
-	    System.out.println("Network Skills output: " + output[0] + " (should be close to 0.0)");
 
-		
+		double[] output = new double[1];
+		network.compute(user, output);
+
+		return output[0];
+
 	}
 }
