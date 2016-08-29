@@ -5,13 +5,13 @@ public class Job {
 	public int jobid;
 	private String name;
 	public String jobDescription;
-	public boolean eligibility;
+	public double eligibility;
 	
-	public boolean geteligibility() {
+	public double geteligibility() {
 		return eligibility;
 	}
 	
-	public void seteligibility(boolean eligibility) {
+	public void seteligibility(double eligibility) {
 		this.eligibility = eligibility;
 	}
 	
