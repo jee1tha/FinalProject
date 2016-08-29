@@ -19,11 +19,11 @@ import databaseLayer.DatabaseMethodsImpl;
 import databaseLayer.Skills;
 import databaseLayer.*;
 
-public class NNSkillModel implements NNModels {
+public class NNSkillModelImpl implements NNModels {
 
 	public static final String FILENAME = "skills_network.eg";
 
-	private static final Logger log = Logger.getLogger(NNSkillModel.class);
+	private static final Logger log = Logger.getLogger(NNSkillModelImpl.class);
 
 	public static void main(String[] args) {
 		/*
