@@ -62,6 +62,7 @@ public interface DatabaseMethods {
 	
 	public boolean checkApplicantUsername(Applicants app);
 	
+	
 	public ResultSet getUserJobStatus(Applicants app);
 	
 	public ResultSet getApplicantQualifications(Applicants app);

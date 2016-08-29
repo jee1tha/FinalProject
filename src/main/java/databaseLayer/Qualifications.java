@@ -6,16 +6,15 @@ public class Qualifications {
 	private String Institute;
 	private String Name;
 	private boolean qualificationsEligibility;
-	private boolean classEligibility;
+	private String qClass;
 	
-	
-	public boolean getClassEligibility() {
-		return classEligibility;
+	public String getqClass() {
+		return qClass;
+	}
+	public void setqClass(String qClass) {
+		this.qClass = qClass;
 	}
 	
-	public void setClassEligibility(boolean classEligibility) {
-		this.classEligibility = classEligibility;
-	}
 	
 	public int getId() {
 		return id;
