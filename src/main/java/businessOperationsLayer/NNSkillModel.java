@@ -3,6 +3,7 @@ package businessOperationsLayer;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.encog.*;
@@ -19,12 +20,9 @@ import databaseLayer.Skills;
 
 public class NNSkillModel {
 
-	public static double SKILL_INPUT[][] = { {1},{2},{4},{5},{1},{3},{2} } ;
-	public static double SKILL_IDEAL[][] ;
 	
-	public static double USER_INPUT[][] ;
-
-	public static double XOR_INPUT2[] ;
+	
+	public static double USER_INPUT[] ;
 	
 	public static final String FILENAME = "skills_network.eg";
 	
@@ -32,12 +30,14 @@ public class NNSkillModel {
 	
 	public static void main(String[] args) {
 		NNSkillModel g = new NNSkillModel();
-		g.trainAndSaveSkillsModel();
-		g.loadAndEvaluate();
+		
+	g.trainAndSaveSkillsModel();
+		//g.loadAndEvaluate();
 	}
 	
 	public void trainAndSaveSkillsModel(){
-		
+		double SKILL_INPUT[][] =  new double[10][5] ; 
+		double  SKILL_IDEAL[][] = new double[10][1] ; 
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
 		Skills skill = new Skills();
 		
@@ -52,21 +52,23 @@ public class NNSkillModel {
 		
 		// add retrieved skills to input and ideal out put arrays
 		int j = 0 ;
-		
+		int i =0;
 		try {
 			while(skillsRS.next()){
-				int i = 0 ;
 				
 				
-				if(i>4){
+				
+				if(i>=4){
 					i =0;
 					
-					SKILL_IDEAL[j][i] = 1.0;
+					SKILL_IDEAL[j][i]=1.0;
 					
 					j++;
 				}
+				String r = skillsRS.getString("sid") ;
+				Double e = Double.parseDouble(r)/1000; 
 				
-				SKILL_INPUT[j][i] = Double.parseDouble(skillsRS.getString("sid")) / 1000 ;
+				SKILL_INPUT[j][i]=e ;
 				
 				i++;
 			}
@@ -90,17 +92,17 @@ public class NNSkillModel {
 		ResultSet skillFalseRS = null;
 		
 		skillFalseRS = db.getSkills(skillFalse) ;
-		
+		int z = 0 ;
 		try {
 			while(skillFalseRS.next()){
-				int i = 0 ;
-				if(i>4){
-					i =0;
-					SKILL_IDEAL[j][i] = 0;
+				
+				if(z>=4){
+					z =0;
+					SKILL_IDEAL[j][z] = (double) 0;
 					j++;
 				}
-					SKILL_INPUT[j][i] = Double.parseDouble(skillFalseRS.getString("sid")) / 1000;
-					i++;
+					SKILL_INPUT[j][z] = Double.parseDouble(skillFalseRS.getString("sid")) / 1000;
+					z++;
 				}
 			log.debug("Retrieved Skills NOT eligible");
 			
@@ -124,7 +126,7 @@ public class NNSkillModel {
 		// training data set
 		
 		try{
-		MLDataSet trainingSet = new BasicMLDataSet(SKILL_INPUT, SKILL_IDEAL);
+		MLDataSet trainingSet = new BasicMLDataSet(SKILL_INPUT,SKILL_IDEAL);
 		
 		final Propagation  train =  new Backpropagation(networkSkills, trainingSet);
 		int epoch = 1;
@@ -152,7 +154,7 @@ public class NNSkillModel {
 		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(FILENAME));
 		
 		double[] output = new double[1];
-		network.compute(XOR_INPUT2, output);
+		network.compute(USER_INPUT, output);
 	    System.out.println("Network Skills output: " + output[0] + " (should be close to 0.0)");
 
 		
