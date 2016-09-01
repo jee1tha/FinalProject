@@ -11,7 +11,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 	private static final Logger log = Logger.getLogger(DatabaseMethodsImpl.class);
 
 	public static void main(String[] args) {
-		// //testing applicant
+		/*// //testing applicant
 		Applicants app = new Applicants();
 		app.setName("testingconnection");
 		app.setBirthDate("2010-05-30");
@@ -83,7 +83,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		//
 
 		// System.out.println( b.getAdminDetails(n).get(0).getContactNo());
-	}
+*/	}
 
 	public int addApplicant(Applicants app) {
 		int result = 0;
@@ -130,7 +130,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			String query = "INSERT INTO `ingrow`.`users`(" + "`name`,`" + "contactno`,`" + "email`,`" + "username`,`"
 					+ "password`,`" + "empno`,`" + "role`)" + "VALUES (   '" + admin.getName() + "'," + "'"
 					+ admin.getContactNo() + "'," + "'" + admin.getEmail() + "'," + "'" + admin.getUsername() + "',"
-					+ "'" + admin.getPassword() + "'," + "'" + admin.getEmpNo() + "'," + "'admin')";
+					+ "'" + admin.getPassword() + "'," + "'" + admin.getEmpNo() + "'," + "'" +admin.getRole() +"')";
 
 			try {
 
@@ -151,40 +151,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		return result;
 	}
 
-	public int addSuperAdmin(Admin admin) {
-
-		int result = 0;
-
-		DBHandler newDb = new DBHandler();
-
-		// Creating object to get the database connection method
-
-		try {
-
-			String query = "INSERT INTO `ingrow`.`users`(" + "`name`,`" + "contactno`,`" + "email`,`" + "username`,`"
-					+ "password`,`" + "empno`,`" + "role`)" + "VALUES (   '" + admin.getName() + "'," + "'"
-					+ admin.getContactNo() + "'," + "'" + admin.getEmail() + "'," + "'" + admin.getUsername() + "',"
-					+ "'" + admin.getPassword() + "'," + "'" + admin.getEmpNo() + "'," + "'super')";
-
-			try {
-
-				result = newDb.insert(query);
-
-				log.debug("insert admin query executed");
-
-			} catch (Exception e) {
-
-				log.debug("add admin query failed : ", e);
-			}
-
-		} catch (Exception e) {
-
-			log.debug("add admin failed : ", e);
-
-		}
-		return result;
-	}
-
+	
 	public int addJob(Job job) {
 		int result = 0;
 
@@ -230,6 +197,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (app.getUsername() != null) {
 				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' AND role ='user'";
 			}
+			if (app.getUsername() != null && app.getPassword() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' AND role ='user' AND password ='"+app.getPassword()+"'";
+			}
 			try {
 
 				results = newDb.getdata(query);
@@ -259,12 +229,20 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 		try {
 			if (admin.getAdminID() != 0) {
-				query = "Select * from  `ingrow`.`users` WHERE id ='" + admin.getAdminID() + "' AND role ='admin' ";
+				query = "Select * from  `ingrow`.`users` WHERE id ='" + admin.getAdminID() + "' AND role ='"+admin.getRole()+"' ";
 			}
 			if (admin.getUsername() != null) {
-				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
-						+ "' AND role ='admin'";
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()+ "' ";
 			}
+			if (admin.getUsername() != null && admin.getRole() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
+						+ "' AND role ='"+admin.getRole()+"'";
+			}
+			if (admin.getUsername() != null && admin.getPassword() !=null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
+						+ "' AND role ='"+admin.getRole()+"' AND password='"+admin.getPassword()+"'";
+			}
+			
 			try {
 
 				results = newDb.getdata(query);
@@ -366,10 +344,10 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		String query = "";
 		try {
 			if (admin.getAdminID() != 0) {
-				query = "Delete from users where id ='" + admin.getAdminID() + "' AND role='admin'";
+				query = "Delete from users where id ='" + admin.getAdminID() + "' AND role='"+admin.getRole()+"'";
 			}
 			if (admin.getUsername() != null) {
-				query = "Delete from users where username ='" + admin.getUsername() + "' AND role='admin'";
+				query = "Delete from users where username ='" + admin.getUsername() + "' AND role='"+admin.getRole()+"'";
 			}
 
 			try {
@@ -391,40 +369,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		return result;
 	}
 
-	public int deleteSuperAdmin(Admin admin) {
-		
-		int result = 0;
-
-		DBHandler newDb = new DBHandler();
-
-		// Creating object to get the database connection method
-		String query = "";
-		try {
-			if (admin.getAdminID() != 0) {
-				query = "Delete from users where id ='" + admin.getAdminID() + "' AND role='super'";
-			}
-			if (admin.getUsername() != null) {
-				query = "Delete from users where username ='" + admin.getUsername() + "' AND role='super'";
-			}
-
-			try {
-
-				result = newDb.insert(query);
-
-				log.debug("delete Super Admin   query executed");
-
-			} catch (Exception e) {
-
-				log.debug("delete Super Admin  query failed : ", e);
-			}
-
-		} catch (Exception e) {
-
-			log.debug("delete Super Admin  failed : ", e);
-
-		}
-		return result;
-	}
+	
 
 	public int deleteJob(Job job) {
 
@@ -515,8 +460,8 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		try {
 			
 			
-			String query = "INSERT INTO `ingrow`.`experience`(`organization`,`post`,`exeligibility`)VALUES('"+ exp.getOrganization() 
-				+"','"+ exp.getPost() +"','"+ boo + "')";
+			String query = "INSERT INTO `ingrow`.`experience`(`organization`,`post`,`exeligibility`,`duration`)VALUES('"+ exp.getOrganization() 
+				+"','"+ exp.getPost() +"','"+ boo + "','"+exp.getDuration()+"')";
 
 			try {
 
@@ -586,6 +531,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		// Creating object to get the database connection method
 
 		try {
+			if (skill.getSeligibility() == false && skill.getSkill() == null && skill.getSkillID() == 0 ) {
+				query = "Select * from  `ingrow`.`skill` WHERE seligibility = '0' ";
+			}
 			if (skill.getSkillID() != 0) {
 				query = "Select * from  `ingrow`.`skill` WHERE sid ='" + skill.getSkillID() + "'";
 			}
@@ -595,9 +543,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (skill.getSeligibility() == true ) {
 				query = "Select * from  `ingrow`.`skill` WHERE seligibility = '1' ";
 			}
-			if (skill.getSeligibility() == false ) {
-				query = "Select * from  `ingrow`.`skill` WHERE seligibility = '0' ";
-			}
+			
 			
 			try {
 
@@ -645,6 +591,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 				query = "Select * from  `ingrow`.`experience` WHERE post = '"+ exp.getPost() 
 						+"' AND organization = '"+exp.getOrganization()+"'";
 			}
+			if (exp.getPost()== null && exp.getOrganization() == null && exp.getExeligibility() == false) {
+				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ exp.getExeligibility() +"' ";
+			}
 			
 		
 			try {
@@ -686,12 +635,15 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (qualification.getName() != null) {
 				query = "Select * from  `ingrow`.`educationqualifications` WHERE name = '"+ qualification.getName() +"' ";
 			}
+			if (qualification.getqClass() != null) {
+				query = "Select * from  `ingrow`.`educationqualifications` WHERE class = '"+ qualification.getqClass() +"' ";
+			}
 			if (qualification.getQualificationsEligibility() == true) {
 				query = "Select * from  `ingrow`.`educationqualifications` WHERE eeligibility = '1' ";
 			}
-			if (qualification.getInstitute() != null && qualification.getName() != null ) {
+			if (qualification.getInstitute() != null && qualification.getName() != null && qualification.getqClass() != null) {
 				query = "Select * from  `ingrow`.`educationqualifications` WHERE institute = '"+ qualification.getInstitute()
-						+"' AND name = '"+qualification.getName()+"'";
+						+"' AND name = '"+qualification.getName()+"' AND class ='"+qualification.getqClass()+"'";
 			}
 			if (qualification.getQualificationsEligibility() == false && qualification.getInstitute() == null && qualification.getId() == 0 && qualification.getName() == null) {
 				query = "Select * from  `ingrow`.`educationqualifications` WHERE eeligibility = '0' ";
@@ -723,13 +675,18 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		int result = 0;
 		int eli = 0;
 		DBHandler newDb = new DBHandler();
-
+		String query = null;
 		// Creating object to get the database connection method
 		if(skill.getSeligibility() == true ){
 			eli = 1;
 		}
-		
-			String query = "UPDATE `ingrow`.`skill` SET `seligibility` = '"+ eli +"' WHERE `sid` = '"+skill.getSkillID()+"'";
+			if(skill.getSkill() != null){
+				query = "UPDATE `ingrow`.`skill` SET `seligibility` = '"+ eli +"' WHERE `name` = '"+skill.getSkill()+"'";
+			}
+			if(skill.getSkillID() != 0){
+				query = "UPDATE `ingrow`.`skill` SET `seligibility` = '"+ eli +"' WHERE `sid` = '"+skill.getSkillID()+"'";
+			}
+			
 			try {
 
 				result = newDb.insert(query);
@@ -834,17 +791,15 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 	public int addApplicantExp(Applicants app, Experience exp) {
 		int result = 0;
-		int eli =0;
+
 		DBHandler newDb = new DBHandler();
 
 		// Creating object to get the database connection method
-		if(exp.getUeeligibility() == true){
-			eli = 1;
-		}
+		
 		try {
 
-			String query = "INSERT INTO `ingrow`.`userexperience`(`id`,`exid`,`duration`,`ueeligibility`)VALUES('"+ app.getAppID()
-							+"','"+ exp.getExpid() +"','"+ exp.getDuration() +"','"+eli+"')";
+			String query = "INSERT INTO `ingrow`.`userexperience`(`id`,`exid`)VALUES('"+ app.getAppID()
+							+"','"+ exp.getExpid() +"')";
 			try {
 
 				result = newDb.insert(query);
@@ -960,6 +915,39 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 		return results;
 	}
+	
+	public boolean checkAdminUsername(Admin app) {
+		boolean results = false;
+		DBHandler newDb = new DBHandler();
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getUsername() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' ";
+			}
+			
+			try {
+
+				ResultSet result = newDb.getdata(query);
+				if(result.next()){
+					results = true;
+				}
+				log.debug("get ADMIN query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get ADMIN query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get ADMIN failed : ", e);
+
+		}
+
+		return results;
+	}
 
 	public ResultSet getUserJobStatus(Applicants app) {
 
@@ -1069,9 +1057,138 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 	}
 
 	public ResultSet getApplicantExperience(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getAppID() != 0) {
+				query = "Select exid from  `ingrow`.`userexperience` WHERE id ='" + app.getAppID() + "'";
+			}
+			
+		
+			try {
+
+				results = newDb.getdata(query);
+
+				log.debug("get user exp query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get get user exp query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get user exp failed : ", e);
+
+		}
+
+		return results;
 	}
+
+	public int deleteskill(Skills skill) {
+		int result = 0;
+
+		DBHandler newDb = new DBHandler();
+
+		// Creating object to get the database connection method
+		String query = "";
+		try {
+			if (skill.getSkillID() != 0) {
+				query = "Delete from skill where sid ='" + skill.getSkillID() + "' ";
+			}
+			if (skill.getSkill() != null) {
+				query = "Delete from skill where name ='" + skill.getSkill() + "' ";
+			}
+
+			try {
+
+				result = newDb.insert(query);
+
+				log.debug("delete skill  query executed");
+
+			} catch (Exception e) {
+
+				log.debug("delete skill  query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("delete skill failed : ", e);
+
+		}
+		return result;
+	}
+
+	public int deleteExp(Experience exp) {
+		int result = 0;
+
+		DBHandler newDb = new DBHandler();
+
+		// Creating object to get the database connection method
+		String query = "";
+		try {
+			if (exp.getExpid() != 0) {
+				query = "Delete from experience where exid ='" + exp.getExpid() + "' ";
+			}
+			if (exp.getOrganization() != null && exp.getPost() != null && exp.getDuration() != 0) {
+				query = "Delete from experience where organization ='" + exp.getOrganization()+ "' AND duration ='"+exp.getDuration()+"' AND post ='"+exp.getPost()+"' ";
+			}
+
+			try {
+
+				result = newDb.insert(query);
+
+				log.debug("delete skill  query executed");
+
+			} catch (Exception e) {
+
+				log.debug("delete skill  query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("delete skill failed : ", e);
+	}
+		return result;
+	}
+	public int deleteQualifications(Qualifications qualifications) {
+		int result = 0;
+
+		DBHandler newDb = new DBHandler();
+
+		// Creating object to get the database connection method
+		String query = "";
+		try {
+			if (qualifications.getId() != 0) {
+				query = "Delete from educationqualifications where eid ='" + qualifications.getId() + "' ";
+			}
+			if (qualifications.getClass() != null && qualifications.getInstitute() != null && qualifications.getName() != null) {
+				query = "Delete from educationqualifications where institute ='" + qualifications.getInstitute() + "' AND name ='"+qualifications.getName()+"' AND class ='"+qualifications.getqClass()+"' ";
+			}
+
+			try {
+
+				result = newDb.insert(query);
+
+				log.debug("delete skill  query executed");
+
+			} catch (Exception e) {
+
+				log.debug("delete skill  query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("delete skill failed : ", e);
+	}
+		return result;
+	}
+
 
 
 

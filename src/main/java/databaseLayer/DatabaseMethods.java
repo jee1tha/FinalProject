@@ -9,8 +9,6 @@ public interface DatabaseMethods {
 	
 	public int addAdmin(Admin admin);
 	
-	public int addSuperAdmin(Admin admin);
-	
 	public int addJob(Job job);
 	
 	
@@ -24,8 +22,6 @@ public interface DatabaseMethods {
 	public int deleteApplicant(Applicants app);
 	
 	public int deleteAdmin(Admin admin);
-	
-	public int deleteSuperAdmin(Admin admin);
 	
 	public int deleteJob(Job job);
 	
@@ -51,6 +47,13 @@ public interface DatabaseMethods {
 	public int updateQualifications(Qualifications qualifications);
 	
 	
+	public int deleteskill( Skills skill);
+	
+	public int deleteExp(Experience exp);
+	
+	public int deleteQualifications(Qualifications qualifications);
+	
+	
 	public int addApplicantSkills(Applicants app, Skills skill);
 	
 	public int addApplicantExp(Applicants app, Experience exp);
@@ -62,6 +65,7 @@ public interface DatabaseMethods {
 	
 	public boolean checkApplicantUsername(Applicants app);
 	
+	public boolean checkAdminUsername(Admin app);
 	
 	public ResultSet getUserJobStatus(Applicants app);
 	

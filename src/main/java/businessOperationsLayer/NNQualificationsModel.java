@@ -15,6 +15,7 @@ import org.encog.persist.EncogDirectoryPersistence;
 
 import databaseLayer.Applicants;
 import databaseLayer.DatabaseMethodsImpl;
+import databaseLayer.Experience;
 import databaseLayer.Qualifications;
 
 public class NNQualificationsModel implements NNModels{
@@ -23,14 +24,14 @@ public class NNQualificationsModel implements NNModels{
 	private static final Logger log = Logger.getLogger(NNQualificationsModel.class);
 	
 	public static void main(String[] args) {
-		/*NNQualificationsModel b = new NNQualificationsModel();
+		NNQualificationsModel b = new NNQualificationsModel();
 		
 		b.trainAndSaveModel();
 		
 		Applicants app = new Applicants();
-		app.setAppID(5);
+		app.setAppID(6);
 		
-		System.out.println(b.loadAndEvaluateModel(app));*/
+		System.out.println(b.loadAndEvaluateModel(app));
 	}
 	public void trainAndSaveModel() {
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
@@ -39,22 +40,34 @@ public class NNQualificationsModel implements NNModels{
 		
 		Qualifications qua = new Qualifications();
 		qua.setQualificationsEligibility(true);
-		ResultSet qualifcationsTrue = db.getQualifications(qua);
+		ResultSet qualificationsTrue = db.getQualifications(qua);
+		
+		// getting experience with eligibility true
+		
+		Experience exp = new Experience();
+		exp.setExeligibility(true);
+		ResultSet experienceTrue = db.getExp(exp);
 		
 		// getting qualifications with eligibility false
 		
 		Qualifications quaF = new Qualifications();
 		quaF.setQualificationsEligibility(false);
-		ResultSet qualifcationsFalse = db.getQualifications(quaF);
+		ResultSet qualificationsFalse = db.getQualifications(quaF);
+		
+	// getting experience with eligibility false
+		
+		Experience expFalse = new Experience();
+		expFalse.setExeligibility(false);
+		ResultSet experienceFalse = db.getExp(exp);
 		
 
 		int rowCal = 0; // calculating no of rows to initiate List
-		int rowCal2=0;
+		int rowCal2 = 0;
 		try {
-			while (qualifcationsTrue.next()) {
+			while (qualificationsTrue.next()) {
 				rowCal++;
 			}
-			while (qualifcationsFalse.next()) {
+			while (qualificationsFalse.next()) {
 				rowCal2++;
 			}
 	
@@ -62,15 +75,7 @@ public class NNQualificationsModel implements NNModels{
 
 			log.debug("Failed to retrive qualifications eligible", e2);
 		}
-		int count1  = rowCal / 2; // determining the list parent array size // 
-		int count2 = rowCal2 / 2 ;
-		if(rowCal % 2 != 0){
-			count1++ ;
-		}
-		if(rowCal2 % 2 != 0){
-			count2++;
-		}
-		int count = count1 + count2 ;
+		int count = (rowCal + rowCal2 ) *2 ;
 		
 		double QUALIFICATION_INPUT[][] = new double[count][2]; // 2 input neurons
 		double QUALIFICATION_IDEAL[][] = new double[count][1]; // 1 input neuron
@@ -78,21 +83,33 @@ public class NNQualificationsModel implements NNModels{
 		// add retrieved qualifcations to input and ideal out put arrays
 		int j = 0;
 		int i = 0;
+		
 		try {
-			qualifcationsTrue.beforeFirst();
-			while (qualifcationsTrue.next()) {
-
+			qualificationsTrue.beforeFirst();
+			experienceTrue.beforeFirst();
+			while (qualificationsTrue.next() ) {
+				boolean hasmore = false;
+				if(experienceTrue.next() == true){
+					hasmore=true;
+				};
 				if (i == 1) {
-					QUALIFICATION_IDEAL[j][0] = 1.0;
+					
 				}
-
-				String r = qualifcationsTrue.getString("eid");
+				
+				String r = qualificationsTrue.getString("eid");
+				int e=0;
+				if(hasmore==true){
+				 e = experienceTrue.getInt("exid");
+				}
+				
 				QUALIFICATION_INPUT[j][i] = Double.parseDouble(r) / 1000;
+				int count4 = i +1;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
 				i++;
 
-				if (i > 1) {
+				if (i == 1) {
 					i = 0;
-
+					QUALIFICATION_IDEAL[j][0] = 1.0;
 					j++;
 				}
 				log.debug("Retrieved qualifcations eligible");
@@ -105,17 +122,27 @@ public class NNQualificationsModel implements NNModels{
 			
 		int z = 0;
 		try {
-			qualifcationsFalse.beforeFirst();
-			while (qualifcationsFalse.next()) {
-
-				if (z == 1) {
-					QUALIFICATION_IDEAL[j][0] = (double) 0;
+			qualificationsFalse.beforeFirst();
+			experienceFalse.beforeFirst();
+			while (qualificationsFalse.next()) {
+				boolean hasmore = false;
+				if(experienceFalse.next() == true){
+					hasmore=true;
+				};
+			
+				
+				int e=0;
+				if(hasmore==true){
+				 e = experienceFalse.getInt("exid");
 				}
-				QUALIFICATION_INPUT[j][z] = Double.parseDouble(qualifcationsFalse.getString("eid")) / 1000;
+				QUALIFICATION_INPUT[j][z] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
+				int count4 = z +1;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 100000;
+				
 				z++;
-				if (z > 1) {
+				if (z == 1) {
 					z = 0;
-
+					QUALIFICATION_IDEAL[j][0] = (double) 0;
 					j++;
 				}
 			}
@@ -127,12 +154,82 @@ public class NNQualificationsModel implements NNModels{
 
 		}	
 		
+		int a = 0;
+		try {
+			qualificationsFalse.beforeFirst();
+			experienceTrue.beforeFirst();
+			while (qualificationsFalse.next()) {
+				boolean hasmore = false;
+				if(experienceTrue.next() == true){
+					hasmore=true;
+				};
+			
+				
+				int e=0;
+				if(hasmore==true){
+				 e = experienceTrue.getInt("exid");
+				}
+				QUALIFICATION_INPUT[j][a] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
+				int count4 = a +1;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 100000;
+				
+				a++;
+				if (a == 1) {
+					a = 0;
+					QUALIFICATION_IDEAL[j][0] = (double) 1;
+					j++;
+				}
+			}
+			log.debug("Retrieved qualifcations NOT eligible");
+
+		} catch (SQLException e1) {
+
+			log.debug("Failed to retrive qualifcations NOT eligible", e1);
+
+		}
+		
+		int b = 0;
+		try {
+			qualificationsTrue.beforeFirst();
+			experienceFalse.beforeFirst();
+			while (qualificationsTrue.next()) {
+				boolean hasmore = false;
+				if(experienceFalse.next() == true){
+					hasmore=true;
+				};
+			
+				
+				int e=0;
+				if(hasmore==true){
+				 e = experienceFalse.getInt("exid");
+				}
+				QUALIFICATION_INPUT[j][b] = Double.parseDouble(qualificationsTrue.getString("eid")) / 1000;
+				int count4 = b +1;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 100000;
+				
+				b++;
+				if (b == 1) {
+					b = 0;
+					QUALIFICATION_IDEAL[j][0] = (double) 0;
+					j++;
+				}
+			}
+			log.debug("Retrieved qualifcations NOT eligible");
+
+		} catch (SQLException e1) {
+
+			log.debug("Failed to retrive qualifcations NOT eligible", e1);
+
+		}
+		
+		
 		System.out.println("Training qualifcations model network under 1% error rate.");
 		log.debug("Training qualifcations model network under 1% error rate, 2 input neurons and 1 output neuron.");
 
 		BasicNetwork networkqualifications = new BasicNetwork();
 		networkqualifications.addLayer(new BasicLayer(2));
-		networkqualifications.addLayer(new BasicLayer(2));
+		networkqualifications.addLayer(new BasicLayer(4));
+
 		networkqualifications.addLayer(new BasicLayer(1));
 		networkqualifications.getStructure().finalizeStructure();
 		networkqualifications.reset();
@@ -149,7 +246,7 @@ public class NNQualificationsModel implements NNModels{
 				System.out.println("Epoch #" + epoch + " Error:" + train.getError());
 				epoch++;
 
-			} while (train.getError() > 0.001);
+			} while (train.getError() > 0.19);
 
 			double e = networkqualifications.calculateError(trainingSetQualifcation);
 			System.out.println("Network qualifcations trained to error :" + e);
@@ -165,18 +262,24 @@ public class NNQualificationsModel implements NNModels{
 	public double loadAndEvaluateModel(Applicants app) {
 		DatabaseMethodsImpl d = new DatabaseMethodsImpl();
 		ResultSet rz = d.getApplicantQualifications(app);
+		ResultSet exp = d.getApplicantExperience(app);
 		double user[] = new double[2];
 		try {
-			int s = 0;
+			
+				
 			while (rz.next()) {
+				exp.next();
 				int w = rz.getInt("eid");
-				user[s] = (double) w / 1000;
-				s++;
+				int e = exp.getInt("exid");
+				user[0] = (double) w / 1000;
+				
+				user[1] = (double) e/100000 ;
+				
 			}
 		} catch (SQLException e) {
-			log.debug("Reading qualifications of user from DB failed at loadandEvaluate Method", e);
+			log.debug("Reading qualifications/experience of user from DB failed at loadandEvaluate Method", e);
 		}
-		System.out.println("Loading Network qualifications ");
+		System.out.println("Loading Network qualifications and experience ");
 		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(FILENAME));
 
 		double[] output = new double[1];
