@@ -23,8 +23,6 @@ public interface DatabaseMethods {
 	
 	public int deleteAdmin(Admin admin);
 	
-	public int deleteSuperAdmin(Admin admin);
-	
 	public int deleteJob(Job job);
 	
 	
@@ -47,6 +45,13 @@ public interface DatabaseMethods {
 	public int updateExp(Experience exp);
 	
 	public int updateQualifications(Qualifications qualifications);
+	
+	
+	public int deleteskill( Skills skill);
+	
+	public int deleteExp(Experience exp);
+	
+	public int deleteQualifications(Qualifications qualifications);
 	
 	
 	public int addApplicantSkills(Applicants app, Skills skill);
