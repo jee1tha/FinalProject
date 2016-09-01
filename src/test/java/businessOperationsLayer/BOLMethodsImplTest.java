@@ -16,13 +16,19 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runners.MethodSorters;
+
+import org.junit.FixMethodOrder;
 
 /**
  *
  * @author VABAYJE
+ * 
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BOLMethodsImplTest {
     
     public BOLMethodsImplTest() {
@@ -49,7 +55,7 @@ public class BOLMethodsImplTest {
      * Test of RegisterUser method, of class BOLMethodsImpl.
      */
     @Test
-    public void testRegisterUser() {
+    public void testARegisterUser() {
         System.out.println("RegisterUser");
         Applicants app = new Applicants();
         app.setName("UnitTest");
@@ -73,7 +79,7 @@ public class BOLMethodsImplTest {
      * Test of RegisterAdmin method, of class BOLMethodsImpl.
      */
     @Test
-    public void testRegisterAdmin() {
+    public void testBRegisterAdmin() {
         System.out.println("RegisterAdmin");
         Admin admin = new Admin();
         admin.setName("UnitTest");
@@ -95,7 +101,7 @@ public class BOLMethodsImplTest {
      * Test of LoginUser method, of class BOLMethodsImpl.
      */
     @Test
-    public void testLoginUser() {
+    public void testCLoginUser() {
         System.out.println("LoginUser");
         Applicants app = new Applicants();
         app.setUsername("unitTest");
@@ -111,7 +117,7 @@ public class BOLMethodsImplTest {
      * Test of LoginAdmin method, of class BOLMethodsImpl.
      */
     @Test
-    public void testLoginAdmin() {
+    public void testDLoginAdmin() {
         System.out.println("LoginAdmin");
         Admin admin = new Admin();
         admin.setUsername("unitTestADMINUSERNAME");
@@ -126,14 +132,15 @@ public class BOLMethodsImplTest {
      * Test of add job  method, of class BOLMethodsImpl.
      */
     @Test
-    public void testAddJob() {
+    public void testEAddJob() {
         System.out.println("addJob");
         Job job = new Job();
 	    job.setJobDescription("UnitTestDesc");
 	    job.setName("unitTest");
         BOLMethodsImpl instance = new BOLMethodsImpl();
-        int expResult = 1;
+        
         int result = instance.addJob(job);
+        int expResult = 1;
         assertEquals(expResult, result);
      
     }
@@ -141,7 +148,7 @@ public class BOLMethodsImplTest {
      * Test of addSkills method, of class BOLMethodsImpl.
      */
     @Test
-    public void testAddSkills() {
+    public void testFAddSkills() {
         System.out.println("addSkills");
         Skills skill = new Skills();
         skill.setSeligibility(false);
@@ -157,7 +164,7 @@ public class BOLMethodsImplTest {
      * Test of addExperience method, of class BOLMethodsImpl.
      */
     @Test
-    public void testAddExperience() {
+    public void testGAddExperience() {
         System.out.println("addExperience");
         Experience exp = new Experience();
         exp.setOrganization("unitTestExp");
@@ -174,7 +181,7 @@ public class BOLMethodsImplTest {
      * Test of addQualifications method, of class BOLMethodsImpl.
      */
     @Test
-    public void testAddQualifications() {
+    public void testHAddQualifications() {
         System.out.println("addQualifications");
         Qualifications qualification =  new Qualifications();
         qualification.setName("unitTestQualification");
@@ -192,7 +199,7 @@ public class BOLMethodsImplTest {
      * Test of updateSkills method, of class BOLMethodsImpl.
      */
     @Test
-    public void testUpdateSkills() {
+    public void testIUpdateSkills() {
         System.out.println("updateSkills");
         Skills skill = new Skills();
         skill.setSkill("UnitTestSkill");
@@ -207,7 +214,7 @@ public class BOLMethodsImplTest {
     			// GET METHODS TESTS 
     
     @Test
-    public void getSkillInfo() {
+    public void testJgetSkillInfo() {
         System.out.println("getSKillInfo");
         Skills skill = new Skills();
         BOLMethodsImpl instance = new BOLMethodsImpl();
@@ -218,7 +225,7 @@ public class BOLMethodsImplTest {
     
     }
        @Test
-    public void getExpInfo() {
+    public void testKgetExpInfo() {
         System.out.println("getExpInfo");
         Experience exp = new Experience();
         BOLMethodsImpl instance = new BOLMethodsImpl();
@@ -231,7 +238,7 @@ public class BOLMethodsImplTest {
     
     }
     @Test
-    public void getQualificationsInfo() {
+    public void testLgetQualificationsInfo() {
         System.out.println("getQualificationsInfo");
        
         BOLMethodsImpl instance = new BOLMethodsImpl();
@@ -244,13 +251,59 @@ public class BOLMethodsImplTest {
        assertEquals(expResult, result);
     
     }
+    /**
+     * Test of getJobInfo method, of class BOLMethodsImpl.
+     */
+    @Test
+    public void testMGetJobInfo() {
+        System.out.println("getJobInfo");
+        Job job = new Job();
+	    job.setJobDescription("UnitTestDesc");
+	    job.setName("unitTest");
+        BOLMethodsImpl instance = new BOLMethodsImpl();
+        String expResult = "unitTest";
+        String result = instance.getJobInfo(job).get(0).getName();
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of getAdminInfo method, of class BOLMethodsImpl.
+     */
+    @Test
+    public void testNGetAdminInfo() {
+        System.out.println("getAdminInfo");
+        Admin admin = new Admin();
+        admin.setUsername("unitTestADMINUSERNAME");
+        BOLMethodsImpl instance = new BOLMethodsImpl();
+        String expResult = "admin";
+        String result = instance.getAdminInfo(admin).get(0).getRole();
+        assertEquals(expResult, result);
+  
+    }
+    /**
+     * Test of getApplicants method, of class BOLMethodsImpl.
+     */
+    @Test
+    public void testOGetApplicants() {
+        System.out.println("getApplicants");
+        Applicants app = new Applicants();
+        app.setUsername("unitTest");
+       
+        BOLMethodsImpl instance = new BOLMethodsImpl();
+        String expResult = "unitTest";
+        String result = instance.getApplicants(app).get(0).getUsername();
+        assertEquals(expResult, result);
+      
+    }
+
     
     // Update Methods Check
     /**
      * Test of updateExperience method, of class BOLMethodsImpl.
      */
     @Test
-    public void testUpdateExperience() {
+    public void testPUpdateExperience() {
         System.out.println("updateExperience");
         Experience exp = new Experience();
         BOLMethodsImpl instance = new BOLMethodsImpl();
@@ -271,7 +324,7 @@ public class BOLMethodsImplTest {
      * Test of updateQualifications method, of class BOLMethodsImpl.
      */
     @Test
-    public void testUpdateQualifications() {
+    public void testQpdateQualifications() {
         System.out.println("updateQualifications");
         Qualifications qualification =  new Qualifications();
         qualification.setName("unitTestQualification");
@@ -290,60 +343,14 @@ public class BOLMethodsImplTest {
 
     }
 
-    /**
-     * Test of getApplicants method, of class BOLMethodsImpl.
-     */
-    @Test
-    public void testGetApplicants() {
-        System.out.println("getApplicants");
-        Applicants app = new Applicants();
-        app.setUsername("unitTest");
-       
-        BOLMethodsImpl instance = new BOLMethodsImpl();
-        String expResult = "unitTest";
-        String result = instance.getApplicants(app).get(0).getUsername();
-        assertEquals(expResult, result);
-      
-    }
-
-    /**
-     * Test of getJobInfo method, of class BOLMethodsImpl.
-     */
-    @Test
-    public void testGetJobInfo() {
-        System.out.println("getJobInfo");
-        Job job = new Job();
-	    job.setJobDescription("UnitTestDesc");
-	    job.setName("unitTest");
-        BOLMethodsImpl instance = new BOLMethodsImpl();
-        String expResult = "unitTest";
-        String result = instance.getJobInfo(job).get(0).getName();
-        assertEquals(expResult, result);
-        
-    }
-
-    /**
-     * Test of getAdminInfo method, of class BOLMethodsImpl.
-     */
-    @Test
-    public void testGetAdminInfo() {
-        System.out.println("getAdminInfo");
-        Admin admin = new Admin();
-        admin.setUsername("unitTestADMINUSERNAME");
-        BOLMethodsImpl instance = new BOLMethodsImpl();
-        String expResult = "admin";
-        String result = instance.getAdminInfo(admin).get(0).getRole();
-        assertEquals(expResult, result);
+   
   
-    }
-
-    
 
    /**
      * Test of deleteAdmins method, of class BOLMethodsImpl.
      */
     @Test
-    public void testDeleteAdmins() {
+    public void testRDeleteAdmins() {
         System.out.println("deleteAdmins");
         Admin admin = new Admin();
         admin.setUsername("unitTestADMINUSERNAME");
@@ -355,7 +362,7 @@ public class BOLMethodsImplTest {
 
     }
 	    @Test
-    public void testDeleteQualification() {
+    public void testSDeleteQualification() {
         System.out.println("delete qualifcation");
         Qualifications qualification =  new Qualifications();
         qualification.setName("unitTestQualification");
@@ -370,7 +377,7 @@ public class BOLMethodsImplTest {
 	
 	
     @Test
-    public void testDeleteExperience() {
+    public void testTDeleteExperience() {
         System.out.println("delete experience");
         Experience exp = new Experience();
         exp.setOrganization("unitTestExp");
@@ -388,7 +395,7 @@ public class BOLMethodsImplTest {
 	 */
      
 	 @Test
-    public void testDeleteSkill() {
+    public void testUDeleteSkill() {
         System.out.println("delete skills");
         Skills skill = new Skills();
         skill.setSkill("UnitTestSkill");
@@ -402,7 +409,7 @@ public class BOLMethodsImplTest {
      * Test of delete user method, of class BOLMethodsImpl.
      */
     @Test
-    public void testdeleteUser() {
+    public void testVdeleteUser() {
         System.out.println("DeleteUser");
         Applicants app = new Applicants();
         app.setUsername("unitTest");
@@ -414,7 +421,18 @@ public class BOLMethodsImplTest {
       
         
     }
-   
+    @Test
+    public void testWdeleteJob() {
+        System.out.println("deleteJob");
+        Job job = new Job();
+	
+	    job.setName("unitTest");
+        BOLMethodsImpl instance = new BOLMethodsImpl();
+        int expResult = 1;
+        int result = instance.deleteJob(job);
+        assertEquals(expResult, result);
+     
+    }
    
    
     

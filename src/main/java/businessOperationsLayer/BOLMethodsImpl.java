@@ -394,6 +394,11 @@ public class BOLMethodsImpl implements BOLMethods{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public int deleteJob(Job job) {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		return db.deleteJob(job);
+	}
 	
 
 

@@ -53,6 +53,8 @@ public interface DatabaseMethods {
 	
 	public int deleteQualifications(Qualifications qualifications);
 	
+	public int deleteJob( Job job);
+	
 	
 	public int addApplicantSkills(Applicants app, Skills skill);
 	

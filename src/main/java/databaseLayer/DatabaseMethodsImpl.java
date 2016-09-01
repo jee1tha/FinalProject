@@ -240,6 +240,10 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			}
 			if (admin.getUsername() != null && admin.getPassword() !=null) {
 				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
+						+ "'AND password='"+admin.getPassword()+"'";
+			}
+			if (admin.getUsername() != null && admin.getPassword() !=null && admin.getRole() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
 						+ "' AND role ='"+admin.getRole()+"' AND password='"+admin.getPassword()+"'";
 			}
 			
