@@ -130,7 +130,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			String query = "INSERT INTO `ingrow`.`users`(" + "`name`,`" + "contactno`,`" + "email`,`" + "username`,`"
 					+ "password`,`" + "empno`,`" + "role`)" + "VALUES (   '" + admin.getName() + "'," + "'"
 					+ admin.getContactNo() + "'," + "'" + admin.getEmail() + "'," + "'" + admin.getUsername() + "',"
-					+ "'" + admin.getPassword() + "'," + "'" + admin.getEmpNo() + "'," + "'admin')";
+					+ "'" + admin.getPassword() + "'," + "'" + admin.getEmpNo() + "'," + "'" +admin.getRole() +"')";
 
 			try {
 
@@ -151,40 +151,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		return result;
 	}
 
-	public int addSuperAdmin(Admin admin) {
-
-		int result = 0;
-
-		DBHandler newDb = new DBHandler();
-
-		// Creating object to get the database connection method
-
-		try {
-
-			String query = "INSERT INTO `ingrow`.`users`(" + "`name`,`" + "contactno`,`" + "email`,`" + "username`,`"
-					+ "password`,`" + "empno`,`" + "role`)" + "VALUES (   '" + admin.getName() + "'," + "'"
-					+ admin.getContactNo() + "'," + "'" + admin.getEmail() + "'," + "'" + admin.getUsername() + "',"
-					+ "'" + admin.getPassword() + "'," + "'" + admin.getEmpNo() + "'," + "'super')";
-
-			try {
-
-				result = newDb.insert(query);
-
-				log.debug("insert admin query executed");
-
-			} catch (Exception e) {
-
-				log.debug("add admin query failed : ", e);
-			}
-
-		} catch (Exception e) {
-
-			log.debug("add admin failed : ", e);
-
-		}
-		return result;
-	}
-
+	
 	public int addJob(Job job) {
 		int result = 0;
 
@@ -230,6 +197,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (app.getUsername() != null) {
 				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' AND role ='user'";
 			}
+			if (app.getUsername() != null && app.getPassword() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' AND role ='user' AND password ='"+app.getPassword()+"'";
+			}
 			try {
 
 				results = newDb.getdata(query);
@@ -259,12 +229,17 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 		try {
 			if (admin.getAdminID() != 0) {
-				query = "Select * from  `ingrow`.`users` WHERE id ='" + admin.getAdminID() + "' AND role ='admin' ";
+				query = "Select * from  `ingrow`.`users` WHERE id ='" + admin.getAdminID() + "' AND role ='"+admin.getRole()+"' ";
 			}
 			if (admin.getUsername() != null) {
 				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
-						+ "' AND role ='admin'";
+						+ "' AND role ='"+admin.getRole()+"'";
 			}
+			if (admin.getUsername() != null && admin.getPassword() !=null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + admin.getUsername()
+						+ "' AND role ='"+admin.getRole()+"' AND password='"+admin.getPassword()+"'";
+			}
+			
 			try {
 
 				results = newDb.getdata(query);
@@ -515,8 +490,8 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		try {
 			
 			
-			String query = "INSERT INTO `ingrow`.`experience`(`organization`,`post`,`exeligibility`)VALUES('"+ exp.getOrganization() 
-				+"','"+ exp.getPost() +"','"+ boo + "')";
+			String query = "INSERT INTO `ingrow`.`experience`(`organization`,`post`,`exeligibility`,`duration`)VALUES('"+ exp.getOrganization() 
+				+"','"+ exp.getPost() +"','"+ boo + "','"+exp.getDuration()+"')";
 
 			try {
 
@@ -644,6 +619,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (exp.getPost() != null && exp.getOrganization() != null ) {
 				query = "Select * from  `ingrow`.`experience` WHERE post = '"+ exp.getPost() 
 						+"' AND organization = '"+exp.getOrganization()+"'";
+			}
+			if (exp.getPost() != null && exp.getOrganization() != null && exp.getExeligibility() == false) {
+				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ exp.getExeligibility() +"' ";
 			}
 			
 		
@@ -834,17 +812,15 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 	public int addApplicantExp(Applicants app, Experience exp) {
 		int result = 0;
-		int eli =0;
+
 		DBHandler newDb = new DBHandler();
 
 		// Creating object to get the database connection method
-		if(exp.getUeeligibility() == true){
-			eli = 1;
-		}
+		
 		try {
 
-			String query = "INSERT INTO `ingrow`.`userexperience`(`id`,`exid`,`duration`,`ueeligibility`)VALUES('"+ app.getAppID()
-							+"','"+ exp.getExpid() +"','"+ exp.getDuration() +"','"+eli+"')";
+			String query = "INSERT INTO `ingrow`.`userexperience`(`id`,`exid`)VALUES('"+ app.getAppID()
+							+"','"+ exp.getExpid() +"')";
 			try {
 
 				result = newDb.insert(query);
@@ -960,6 +936,39 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 		return results;
 	}
+	
+	public boolean checkAdminUsername(Admin app) {
+		boolean results = false;
+		DBHandler newDb = new DBHandler();
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getUsername() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' ";
+			}
+			
+			try {
+
+				ResultSet result = newDb.getdata(query);
+				if(result.next()){
+					results = true;
+				}
+				log.debug("get ADMIN query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get ADMIN query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get ADMIN failed : ", e);
+
+		}
+
+		return results;
+	}
 
 	public ResultSet getUserJobStatus(Applicants app) {
 
@@ -1069,9 +1078,39 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 	}
 
 	public ResultSet getApplicantExperience(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getAppID() != 0) {
+				query = "Select exid from  `ingrow`.`userexperience` WHERE id ='" + app.getAppID() + "'";
+			}
+			
+		
+			try {
+
+				results = newDb.getdata(query);
+
+				log.debug("get user exp query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get get user exp query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get user exp failed : ", e);
+
+		}
+
+		return results;
 	}
+
 
 
 

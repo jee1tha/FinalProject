@@ -9,8 +9,6 @@ public interface DatabaseMethods {
 	
 	public int addAdmin(Admin admin);
 	
-	public int addSuperAdmin(Admin admin);
-	
 	public int addJob(Job job);
 	
 	
@@ -62,6 +60,7 @@ public interface DatabaseMethods {
 	
 	public boolean checkApplicantUsername(Applicants app);
 	
+	public boolean checkAdminUsername(Admin app);
 	
 	public ResultSet getUserJobStatus(Applicants app);
 	
