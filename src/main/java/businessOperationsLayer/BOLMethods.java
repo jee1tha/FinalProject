@@ -72,6 +72,7 @@ public interface BOLMethods {
 	
 	public int deleteQualifications(Qualifications qualifications);
 	
+	public int deleteJob( Job job);
 	
 	
 }
