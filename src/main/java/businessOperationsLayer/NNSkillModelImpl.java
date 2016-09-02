@@ -26,17 +26,17 @@ public class NNSkillModelImpl implements NNModels {
 	private static final Logger log = Logger.getLogger(NNSkillModelImpl.class);
 
 	public static void main(String[] args) {
-		/*
-		 * NNSkillModel g = new NNSkillModel(); DatabaseMethodsImpl d = new
-		 * DatabaseMethodsImpl(); Applicants aa = new Applicants();
-		 * aa.setAppID(5);
-		 * 
-		 * 
-		 * //g.trainAndSaveModel();
-		 * 
-		 * System.out.println("Network Skills output: " +
-		 * g.loadAndEvaluateModel(aa) + " (should be close to 0.0)");
-		 */
+		
+		  NNSkillModelImpl g = new NNSkillModelImpl();
+		  DatabaseMethodsImpl d = new  DatabaseMethodsImpl(); 
+		  Applicants aa = new Applicants();
+		  aa.setAppID(6);
+		  
+		  
+	 g.trainAndSaveModel();
+		  
+		  System.out.println("Network Skills output: "+  g.loadAndEvaluateModel(aa) );
+		 
 	}
 
 	public void trainAndSaveModel() {
@@ -141,12 +141,12 @@ public class NNSkillModelImpl implements NNModels {
 
 		try {
 			MLDataSet trainingSet = new BasicMLDataSet(SKILL_INPUT, SKILL_IDEAL);
-
+		
 			final Propagation train = new Backpropagation(networkSkills, trainingSet);
 			int epoch = 1;
 			do {
 				train.iteration();
-				System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+				System.out.println("Epoch #" + epoch + " Error:" + train.getError() );
 				epoch++;
 
 			} while (train.getError() > 0.001);

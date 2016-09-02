@@ -5,12 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
+import org.encog.engine.network.activation.ActivationBiPolar;
+import org.encog.engine.network.activation.ActivationSigmoid;
+import org.encog.engine.network.activation.ActivationTANH;
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.Propagation;
 import org.encog.neural.networks.training.propagation.back.Backpropagation;
+import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
 import org.encog.persist.EncogDirectoryPersistence;
 
 import databaseLayer.Applicants;
@@ -75,7 +79,7 @@ public class NNQualificationsModel implements NNModels{
 
 			log.debug("Failed to retrive qualifications eligible", e2);
 		}
-		int count = (rowCal + rowCal2 ) *2 ;
+		int count = (rowCal + rowCal2 ) *2   ;
 		
 		double QUALIFICATION_INPUT[][] = new double[count][2]; // 2 input neurons
 		double QUALIFICATION_IDEAL[][] = new double[count][1]; // 1 input neuron
@@ -137,7 +141,7 @@ public class NNQualificationsModel implements NNModels{
 				}
 				QUALIFICATION_INPUT[j][z] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
 				int count4 = z +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 100000;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
 				
 				z++;
 				if (z == 1) {
@@ -171,7 +175,7 @@ public class NNQualificationsModel implements NNModels{
 				}
 				QUALIFICATION_INPUT[j][a] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
 				int count4 = a +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 100000;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
 				
 				a++;
 				if (a == 1) {
@@ -205,7 +209,7 @@ public class NNQualificationsModel implements NNModels{
 				}
 				QUALIFICATION_INPUT[j][b] = Double.parseDouble(qualificationsTrue.getString("eid")) / 1000;
 				int count4 = b +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 100000;
+				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
 				
 				b++;
 				if (b == 1) {
@@ -226,33 +230,33 @@ public class NNQualificationsModel implements NNModels{
 		System.out.println("Training qualifcations model network under 1% error rate.");
 		log.debug("Training qualifcations model network under 1% error rate, 2 input neurons and 1 output neuron.");
 
-		BasicNetwork networkqualifications = new BasicNetwork();
-		networkqualifications.addLayer(new BasicLayer(2));
-		networkqualifications.addLayer(new BasicLayer(4));
-
-		networkqualifications.addLayer(new BasicLayer(1));
-		networkqualifications.getStructure().finalizeStructure();
-		networkqualifications.reset();
+		BasicNetwork networkSkills = new BasicNetwork();
+		networkSkills.addLayer(new BasicLayer(2));
+		networkSkills.addLayer(new BasicLayer(6));
+		networkSkills.addLayer(new BasicLayer( 1));
+		networkSkills.getStructure().finalizeStructure();
+		networkSkills.reset();
 
 		// training data set
-
+		double QUALIFICATION_INPUT1[][] = {{1.0} ,{1.0},  {0.0} , {0.0} , {1.0} } ;
+		double QUALIFICATION_IDEAL1[][] = {{0.001, 0.00001}, {0.002, 0.00003}, {0.003, 0.00004}, {0.004, 0.00005}, {0.003, 0.00002}} ;
 		try {
-			MLDataSet trainingSetQualifcation = new BasicMLDataSet(QUALIFICATION_INPUT, QUALIFICATION_IDEAL);
-
-			final Propagation train = new Backpropagation(networkqualifications, trainingSetQualifcation);
+			MLDataSet trainingSetQualifcation = new BasicMLDataSet(QUALIFICATION_IDEAL1, QUALIFICATION_INPUT1);
+	//		final ResilientPropagation train = new ResilientPropagation(networkSkills, trainingSetQualifcation);
+		final Propagation train = new Backpropagation(networkSkills, trainingSetQualifcation);
 			int epoch = 1;
 			do {
 				train.iteration();
-				System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+				System.out.println("Epoch #" + epoch + " Error:" + train.getError() + 	networkSkills.dumpWeights());
 				epoch++;
 
-			} while (train.getError() > 0.19);
+			} while (train.getError() > 0.001);
 
-			double e = networkqualifications.calculateError(trainingSetQualifcation);
+			double e = networkSkills.calculateError(trainingSetQualifcation);
 			System.out.println("Network qualifcations trained to error :" + e);
 			System.out.println("Saving Network (qualifcations) ");
-
-			EncogDirectoryPersistence.saveObject(new File(FILENAME), networkqualifications);
+		
+			EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
 			log.debug("Training qualifcations Network success at Epoch #" + epoch);
 		} catch (Exception e) {
 			log.debug("Training qualifcations Network failed", e);
@@ -271,9 +275,9 @@ public class NNQualificationsModel implements NNModels{
 				exp.next();
 				int w = rz.getInt("eid");
 				int e = exp.getInt("exid");
-				user[0] = (double) w / 1000;
+				user[0] = (double) w / 100;
 				
-				user[1] = (double) e/100000 ;
+				user[1] = (double) e/1000 ;
 				
 			}
 		} catch (SQLException e) {
