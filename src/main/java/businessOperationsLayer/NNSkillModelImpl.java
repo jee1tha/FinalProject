@@ -30,10 +30,10 @@ public class NNSkillModelImpl implements NNModels {
 		  NNSkillModelImpl g = new NNSkillModelImpl();
 		  DatabaseMethodsImpl d = new  DatabaseMethodsImpl(); 
 		  Applicants aa = new Applicants();
-		  aa.setAppID(6);
+		  aa.setAppID(3);
 		  
 		  
-	 g.trainAndSaveModel();
+	// g.trainAndSaveModel();
 		  
 		  System.out.println("Network Skills output: "+  g.loadAndEvaluateModel(aa) );
 		 
