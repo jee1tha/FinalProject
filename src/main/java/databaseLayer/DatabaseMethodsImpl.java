@@ -579,6 +579,10 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		// Creating object to get the database connection method
 
 		try {
+			int l = 0 ;
+			if (exp.getExeligibility() == true) {
+				l=1;
+			}
 			if (exp.getExpid() != 0) {
 				query = "Select * from  `ingrow`.`experience` WHERE exid ='" + exp.getExpid() + "'";
 			}
@@ -589,14 +593,14 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 				query = "Select * from  `ingrow`.`experience` WHERE post = '"+exp.getPost()+"' ";
 			}
 			if (exp.getExeligibility() == true) {
-				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ exp.getExeligibility() +"' ";
+				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ l+"' ";
 			}
 			if (exp.getPost() != null && exp.getOrganization() != null ) {
 				query = "Select * from  `ingrow`.`experience` WHERE post = '"+ exp.getPost() 
 						+"' AND organization = '"+exp.getOrganization()+"'";
 			}
 			if (exp.getPost()== null && exp.getOrganization() == null && exp.getExeligibility() == false) {
-				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ exp.getExeligibility() +"' ";
+				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ l+"' ";
 			}
 			
 		

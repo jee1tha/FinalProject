@@ -46,238 +46,156 @@ public class NNQualificationsModel implements NNModels{
 		qua.setQualificationsEligibility(true);
 		ResultSet qualificationsTrue = db.getQualifications(qua);
 		
-		// getting experience with eligibility true
-		
-		Experience exp = new Experience();
-		exp.setExeligibility(true);
-		ResultSet experienceTrue = db.getExp(exp);
-		
+
 		// getting qualifications with eligibility false
 		
 		Qualifications quaF = new Qualifications();
 		quaF.setQualificationsEligibility(false);
 		ResultSet qualificationsFalse = db.getQualifications(quaF);
 		
-	// getting experience with eligibility false
-		
-		Experience expFalse = new Experience();
-		expFalse.setExeligibility(false);
-		ResultSet experienceFalse = db.getExp(exp);
-		
 
-		int rowCal = 0; // calculating no of rows to initiate List
+
+		int rowCal1 = 0; // calculating no of rows to initiate List
 		int rowCal2 = 0;
 		try {
 			while (qualificationsTrue.next()) {
-				rowCal++;
+					rowCal1++;
 			}
 			while (qualificationsFalse.next()) {
-				rowCal2++;
+					rowCal2++;
 			}
-	
-		} catch (SQLException e2) {
-
-			log.debug("Failed to retrive qualifications eligible", e2);
+		} catch (SQLException e1) {
+			log.debug("Row count failed", e1);
 		}
-		int count = (rowCal + rowCal2 ) *2   ;
-		
-		double QUALIFICATION_INPUT[][] = new double[count][2]; // 2 input neurons
-		double QUALIFICATION_IDEAL[][] = new double[count][1]; // 1 input neuron
-		
-		// add retrieved qualifcations to input and ideal out put arrays
+		int rowCal3= 0 ;
+		int rowCal4=0;
+		rowCal3 = rowCal1/ 2;
+		if(rowCal1%2 !=0){
+			rowCal3++;
+		}
+		rowCal4 = rowCal2/ 2;
+		if(rowCal2%2 !=0){
+			rowCal4++;
+		}
+		int count = rowCal3 + rowCal4 ;
+		double EXP_INPUT[][] = new double[count][2]; // 2 input neurons
+		double EXP_IDEAL[][] = new double[count][1]; // 1 input neuron
 		int j = 0;
 		int i = 0;
-		
 		try {
 			qualificationsTrue.beforeFirst();
-			experienceTrue.beforeFirst();
-			while (qualificationsTrue.next() ) {
-				boolean hasmore = false;
-				if(experienceTrue.next() == true){
-					hasmore=true;
-				};
-				if (i == 1) {
-					
+			while(qualificationsTrue.next()){
+				if(i>1){
+					i=0;
 				}
+				EXP_INPUT[j][i] = Double.parseDouble(qualificationsTrue.getString("eid")) / 1000;
 				
-				String r = qualificationsTrue.getString("eid");
-				int e=0;
-				if(hasmore==true){
-				 e = experienceTrue.getInt("exid");
+				if(i == 1){
+					 EXP_IDEAL[j][0]=1.0;
+					j++;
 				}
-				
-				QUALIFICATION_INPUT[j][i] = Double.parseDouble(r) / 1000;
-				int count4 = i +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
 				i++;
-
-				if (i == 1) {
-					i = 0;
-					QUALIFICATION_IDEAL[j][0] = 1.0;
-					j++;
-				}
-				log.debug("Retrieved qualifcations eligible");
-			}
-	
 			
-		} catch( SQLException e){
-			log.debug("Failed to retrieve qualifications eligible");
-		}
-			
-		int z = 0;
-		try {
-			qualificationsFalse.beforeFirst();
-			experienceFalse.beforeFirst();
-			while (qualificationsFalse.next()) {
-				boolean hasmore = false;
-				if(experienceFalse.next() == true){
-					hasmore=true;
-				};
-			
-				
-				int e=0;
-				if(hasmore==true){
-				 e = experienceFalse.getInt("exid");
-				}
-				QUALIFICATION_INPUT[j][z] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
-				int count4 = z +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
-				
-				z++;
-				if (z == 1) {
-					z = 0;
-					QUALIFICATION_IDEAL[j][0] = (double) 0;
-					j++;
-				}
-			}
-			log.debug("Retrieved qualifcations NOT eligible");
-
-		} catch (SQLException e1) {
-
-			log.debug("Failed to retrive qualifcations NOT eligible", e1);
-
-		}	
-		
-		int a = 0;
-		try {
-			qualificationsFalse.beforeFirst();
-			experienceTrue.beforeFirst();
-			while (qualificationsFalse.next()) {
-				boolean hasmore = false;
-				if(experienceTrue.next() == true){
-					hasmore=true;
-				};
-			
-				
-				int e=0;
-				if(hasmore==true){
-				 e = experienceTrue.getInt("exid");
-				}
-				QUALIFICATION_INPUT[j][a] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
-				int count4 = a +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
-				
-				a++;
-				if (a == 1) {
-					a = 0;
-					QUALIFICATION_IDEAL[j][0] = (double) 1;
-					j++;
-				}
-			}
-			log.debug("Retrieved qualifcations NOT eligible");
-
-		} catch (SQLException e1) {
-
-			log.debug("Failed to retrive qualifcations NOT eligible", e1);
-
-		}
-		
-		int b = 0;
-		try {
+			}	
 			qualificationsTrue.beforeFirst();
-			experienceFalse.beforeFirst();
-			while (qualificationsTrue.next()) {
-				boolean hasmore = false;
-				if(experienceFalse.next() == true){
-					hasmore=true;
-				};
+			qualificationsTrue.next();
+			{
+				if(EXP_INPUT[j][1]== 0.0 && EXP_INPUT[j][0] != 0.0){
+				
+				EXP_INPUT[j][1]= Double.parseDouble(qualificationsTrue.getString("eid"))/ 1000;
+				
+				 EXP_IDEAL[j][0]=1.0;
+				 j++;
+			}
+				
+			}
 			
-				
-				int e=0;
-				if(hasmore==true){
-				 e = experienceFalse.getInt("exid");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			i=0;
+			qualificationsFalse.beforeFirst();
+			while(qualificationsFalse.next()){
+				if(i>1){
+					i=0;
 				}
-				QUALIFICATION_INPUT[j][b] = Double.parseDouble(qualificationsTrue.getString("eid")) / 1000;
-				int count4 = b +1;
-				QUALIFICATION_INPUT[j][count4] = (double)e / 10000;
+				EXP_INPUT[j][i] = Double.parseDouble(qualificationsFalse.getString("eid")) / 1000;
 				
-				b++;
-				if (b == 1) {
-					b = 0;
-					QUALIFICATION_IDEAL[j][0] = (double) 0;
+				if(i == 1){
+					 EXP_IDEAL[j][0]=0.0;
 					j++;
 				}
+				i++;
+			
+			}	
+			qualificationsFalse.beforeFirst();
+			qualificationsFalse.next();
+			{if(j<count){
+				if(EXP_INPUT[j][1]== 0.0 && EXP_INPUT[j][0] != 0.0){
+				
+				EXP_INPUT[j][i]= Double.parseDouble(qualificationsFalse.getString("eid"))/ 1000;
+				 EXP_IDEAL[j][0]=0.0;
 			}
-			log.debug("Retrieved qualifcations NOT eligible");
-
+			}}
+			
 		} catch (SQLException e1) {
-
-			log.debug("Failed to retrive qualifcations NOT eligible", e1);
-
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
-		
-		System.out.println("Training qualifcations model network under 1% error rate.");
-		log.debug("Training qualifcations model network under 1% error rate, 2 input neurons and 1 output neuron.");
+	System.out.println("Training Experience model network under 1% error rate.");
+	log.debug("Training Experience model network under 1% error rate, 2 input neurons and 1 output neuron.");
 
-		BasicNetwork networkSkills = new BasicNetwork();
-		networkSkills.addLayer(new BasicLayer(2));
-		networkSkills.addLayer(new BasicLayer(6));
-		networkSkills.addLayer(new BasicLayer( 1));
-		networkSkills.getStructure().finalizeStructure();
-		networkSkills.reset();
+	BasicNetwork networkSkills = new BasicNetwork();
+	networkSkills.addLayer(new BasicLayer(2));
+	networkSkills.addLayer(new BasicLayer(6));
+	networkSkills.addLayer(new BasicLayer( 1));
+	networkSkills.getStructure().finalizeStructure();
+	networkSkills.reset();
 
-		// training data set
-		double QUALIFICATION_INPUT1[][] = {{1.0} ,{1.0},  {0.0} , {0.0} , {1.0} } ;
-		double QUALIFICATION_IDEAL1[][] = {{0.001, 0.00001}, {0.002, 0.00003}, {0.003, 0.00004}, {0.004, 0.00005}, {0.003, 0.00002}} ;
-		try {
-			MLDataSet trainingSetQualifcation = new BasicMLDataSet(QUALIFICATION_IDEAL1, QUALIFICATION_INPUT1);
-	//		final ResilientPropagation train = new ResilientPropagation(networkSkills, trainingSetQualifcation);
+	// training data set
+	double QUALIFICATION_INPUT1[][] = {{1.0} ,{1.0},  {0.0} , {0.0} , {1.0} } ;
+	double QUALIFICATION_IDEAL1[][] = {{0.001, 0.00001}, {0.002, 0.00003}, {0.003, 0.00004}, {0.004, 0.00005}, {0.003, 0.00002}} ;
+	try {
+		MLDataSet trainingSetQualifcation = new BasicMLDataSet(EXP_INPUT, EXP_IDEAL);
 		final Propagation train = new Backpropagation(networkSkills, trainingSetQualifcation);
-			int epoch = 1;
-			do {
-				train.iteration();
-				System.out.println("Epoch #" + epoch + " Error:" + train.getError() + 	networkSkills.dumpWeights());
-				epoch++;
+		int epoch = 1;
+		do {
+			train.iteration();
+			System.out.println("Epoch #" + epoch + " Error:" + train.getError() );
+			epoch++;
 
-			} while (train.getError() > 0.001);
+		} while (train.getError() > 0.001);
 
-			double e = networkSkills.calculateError(trainingSetQualifcation);
-			System.out.println("Network qualifcations trained to error :" + e);
-			System.out.println("Saving Network (qualifcations) ");
-		
-			EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
-			log.debug("Training qualifcations Network success at Epoch #" + epoch);
-		} catch (Exception e) {
-			log.debug("Training qualifcations Network failed", e);
-		}
+		double e = networkSkills.calculateError(trainingSetQualifcation);
+		System.out.println("Network Experience trained to error :" + e);
+		System.out.println("Saving Network (Experience) ");
+	
+		EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
+		log.debug("Training Experience Network success at Epoch #" + epoch);
+	} catch (Exception e) {
+		log.debug("Training Experience Network failed", e);
+	}
 	}
 
 	public double loadAndEvaluateModel(Applicants app) {
 		DatabaseMethodsImpl d = new DatabaseMethodsImpl();
-		ResultSet rz = d.getApplicantQualifications(app);
 		ResultSet exp = d.getApplicantExperience(app);
 		double user[] = new double[2];
 		try {
+			int r = 0;
+				
+			while (exp.next()) {
+				
 			
-				
-			while (rz.next()) {
-				exp.next();
-				int w = rz.getInt("eid");
 				int e = exp.getInt("exid");
-				user[0] = (double) w / 100;
 				
-				user[1] = (double) e/1000 ;
+				
+				user[r] = (double) e/1000 ;
+				r++;
 				
 			}
 		} catch (SQLException e) {
