@@ -481,7 +481,7 @@ public class BOLMethodsImpl implements BOLMethods{
 	public void trainQualificationsExperienceNN() {
 		if(flagQE == true){
 			log.debug("Training Experience + Qualifications Neural Network ");
-		NNQualificationsAndExperience b = new NNQualificationsAndExperience();
+		NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
 		flagQE = false;
 		log.debug("Experience + Qualifications Neural Network Flag set to False ");
 			if(b.trainAndSaveModel()==1){
@@ -499,7 +499,7 @@ public class BOLMethodsImpl implements BOLMethods{
 		double skillScore = 0.0;
 		double expQuaScore = 0.0;
 		double finalScore = 0.0;
-		NNQualificationsAndExperience expQua = new NNQualificationsAndExperience();
+		NNQualificationsAndExperienceImpl expQua = new NNQualificationsAndExperienceImpl();
 		expQuaScore= expQua.loadAndEvaluateModel(app);
 		NNSkillModelImpl skillNN = new NNSkillModelImpl();
 		skillScore=skillNN.loadAndEvaluateModel(app);

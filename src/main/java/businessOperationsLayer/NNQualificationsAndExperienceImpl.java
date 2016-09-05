@@ -20,13 +20,13 @@ import databaseLayer.Applicants;
 import databaseLayer.DatabaseMethodsImpl;
 import databaseLayer.Experience;
 import databaseLayer.Qualifications;
-public class NNQualificationsAndExperience implements NNModels{
+public class NNQualificationsAndExperienceImpl implements NNModels{
 	public static final String FILENAME = "qualifications_network.eg";
 
-	private static final Logger log = Logger.getLogger(NNQualificationsAndExperience.class);
+	private static final Logger log = Logger.getLogger(NNQualificationsAndExperienceImpl.class);
 	
 	public static void main(String[] args) {
-		NNQualificationsAndExperience b = new NNQualificationsAndExperience();
+		NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
 		
 		//b.trainAndSaveModel();
 		
