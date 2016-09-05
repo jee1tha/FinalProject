@@ -39,7 +39,7 @@ public class NNSkillModelImpl implements NNModels {
 		 
 	}
 
-	public void trainAndSaveModel() {
+	public int trainAndSaveModel() {
 
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
 
@@ -160,6 +160,7 @@ public class NNSkillModelImpl implements NNModels {
 		} catch (Exception e) {
 			log.debug("Training Skill Network failed", e);
 		}
+		return 1;
 	}
 
 	public double loadAndEvaluateModel(Applicants app) {

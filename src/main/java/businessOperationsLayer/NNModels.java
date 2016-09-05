@@ -3,6 +3,6 @@ package businessOperationsLayer;
 import databaseLayer.Applicants;
 
 public interface NNModels {
-	public void trainAndSaveModel();
+	public int trainAndSaveModel();
 	public double loadAndEvaluateModel(Applicants app);
 }

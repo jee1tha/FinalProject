@@ -9,7 +9,7 @@ public class DEMOSTRATION_CLASS {
 	NNQualificationsAndExperience b = new NNQualificationsAndExperience();
 		
 		//b.trainAndSaveModel();
-		int[] applicants =  new int[10];
+	/*	int[] applicants =  new int[10];
 		applicants[1] = 3;
 		applicants[2] = 5;
 		applicants[3] = 6;
@@ -30,7 +30,11 @@ public class DEMOSTRATION_CLASS {
 			
 			System.out.println(score[i]);
 			}
+	
+	*/
+	
 		// SKILLS TESTING
+	/*	NNSkillModelImpl g = new NNSkillModelImpl();
 		// g.trainAndSaveModel();
 		int[] applicant =  new int[10];
 		applicant[0] = 3;
@@ -50,15 +54,26 @@ public class DEMOSTRATION_CLASS {
 		  double[] score2 =  new double[10];
 		  for(int i =0; i<10 ;i++){
 			  aa.setAppID(applicant[i]);
-				score2[i]=b.loadAndEvaluateModel(aa);
+				score2[i]=g.loadAndEvaluateModel(aa);
 				}
 			for(int i =0; i<10 ;i++){
 				
 				System.out.println(score2[i]);
 				} 
+	*/
+		  
+	BOLMethodsImpl z = new BOLMethodsImpl();
+	Applicants ap = new Applicants();
+	ap.setAppID(3);
+	z.evaluateApplicant(ap);
+/*	for(int i = 0 ; i <z.getApplicantSkills(ap).size(); i++){
+		System.out.println(	z.getApplicantSkills(ap).get(i).getSkill());
+		System.out.println(z.getApplicantSkills(ap).get(i).getSeligibility());
+		System.out.println(	z.getApplicantSkills(ap).get(i).getSkillID());
+
 	
-		  
-		  
+
+	}*/
 		
 }
 }
