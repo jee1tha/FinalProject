@@ -23,7 +23,7 @@ import databaseLayer.Qualifications;
 public class NNQualificationsAndExperience implements NNModels{
 	public static final String FILENAME = "qualifications_network.eg";
 
-	private static final Logger log = Logger.getLogger(NNQualificationsModel.class);
+	private static final Logger log = Logger.getLogger(NNQualificationsAndExperience.class);
 	
 	public static void main(String[] args) {
 		NNQualificationsAndExperience b = new NNQualificationsAndExperience();
