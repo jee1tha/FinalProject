@@ -6,6 +6,29 @@ public class Job {
 	private String name;
 	public String jobDescription;
 	public double eligibility;
+	public double skillScore;
+	public double expQuaScore;
+	public double finalScore;
+	
+	public double getSkillScore() {
+		return skillScore;
+	}
+	public void setSkillScore(double skillScore) {
+		this.skillScore = skillScore;
+	}
+	public double getExpQuaScore() {
+		return expQuaScore;
+	}
+	public void setExpQuaScore(double expQuaScore) {
+		this.expQuaScore = expQuaScore;
+	}
+	
+	public double getFinalScore() {
+		return finalScore;
+	}
+	public void setFinalScore(double finalScore) {
+		this.finalScore = finalScore;
+	}
 	
 	public double geteligibility() {
 		return eligibility;

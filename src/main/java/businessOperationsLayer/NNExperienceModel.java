@@ -30,7 +30,7 @@ public class NNExperienceModel implements NNModels {
 		
 		System.out.println(b.loadAndEvaluateModel(app));
 	}
-	public void trainAndSaveModel()  {
+	public int trainAndSaveModel()  {
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
 		
 		// getting experience with eligibility true
@@ -168,6 +168,7 @@ public class NNExperienceModel implements NNModels {
 	} catch (Exception e) {
 		log.debug("Training Experience Network failed", e);
 	}
+	return 1;
 }
 
 public double loadAndEvaluateModel(Applicants app) {

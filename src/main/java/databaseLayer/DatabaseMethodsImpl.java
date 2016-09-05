@@ -861,16 +861,14 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 	public int addApplicantJob(Applicants app,Job job){
 		int result = 0;
-		double eli = 0;
+		
 		DBHandler newDb = new DBHandler();
 
 		// Creating object to get the database connection method
-		if(job.geteligibility() != 0){
-			eli = job.geteligibility() ;
-		}
+		
 		try {
 
-			String query = "INSERT INTO `ingrow`.`userjob`(`id`,`jid`,`eligibility`)VALUES('"+app.getAppID()+"','"+job.getJobid()+"','"+eli+"')";
+			String query = "INSERT INTO `ingrow`.`userjob`(`id`,`jid`,`eligibilityFinal`,`skillScore`,`expQuaScore`)VALUES('"+app.getAppID()+"','"+job.getJobid()+"','"+job.getFinalScore()+"','"+job.getSkillScore()+"','"+job.getExpQuaScore()+"')";
 			try {
 
 				result = newDb.insert(query);

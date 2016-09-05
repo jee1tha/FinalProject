@@ -37,7 +37,7 @@ public class NNQualificationsModel implements NNModels{
 		
 		System.out.println(b.loadAndEvaluateModel(app));
 	}
-	public void trainAndSaveModel() {
+	public int trainAndSaveModel() {
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
 
 		// getting qualifications with eligibility true
@@ -179,6 +179,8 @@ public class NNQualificationsModel implements NNModels{
 	} catch (Exception e) {
 		log.debug("Training Experience Network failed", e);
 	}
+	
+	return 1;
 	}
 
 	public double loadAndEvaluateModel(Applicants app) {

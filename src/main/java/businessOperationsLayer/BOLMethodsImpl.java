@@ -17,7 +17,8 @@ import databaseLayer.Skills;
 public class BOLMethodsImpl implements BOLMethods{
 	
 	private static final Logger log = Logger.getLogger(BOLMethodsImpl.class);
-	
+	private static boolean flagQE = true;
+	private static boolean flagS= true;
 	public int RegisterUser(Applicants app) {
 		int result = 0;
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
@@ -262,12 +263,6 @@ public class BOLMethodsImpl implements BOLMethods{
 		return db.deleteApplicant(app);
 	}
 
-	public void trainSkillsNN() {
-		NNSkillModelImpl skillNN = new NNSkillModelImpl();
-		skillNN.trainAndSaveModel();
-	}
-
-
 
 	public int deleteskill(Skills skill) {
 		DatabaseMethodsImpl db = new  DatabaseMethodsImpl();
@@ -365,34 +360,186 @@ public class BOLMethodsImpl implements BOLMethods{
 	}
 
 	public ArrayList<Skills> getApplicantSkills(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet uSkills =db.getApplicantSkills(app);
+		ArrayList<Skills> skillArray = new ArrayList<Skills>();
+		try {
+			while(uSkills.next()){
+				Skills sk = new Skills();
+				sk.setSkillID(uSkills.getInt("sid"));
+				
+				DatabaseMethodsImpl db2 = new DatabaseMethodsImpl();
+				ResultSet skill = db2.getSkills(sk);
+				
+					while(skill.next()){
+						boolean eligi = false;
+						Skills sk2= new Skills();
+						sk2.setSkill(skill.getString("name"));
+						if(skill.getInt("seligibility") == 1){
+							eligi = true;
+						}
+						sk2.setSeligibility(eligi);
+						sk2.setSkillID(skill.getInt("sid"));
+						skillArray.add(sk2);
+					}
+			
+			
+			}
+		} catch (SQLException e) {
+			log.debug("Get user skills failed : ", e);
+		}
+		return skillArray;
 	}
 
 	public ArrayList<Experience> getApplicantExp(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet uExp =db.getApplicantExperience(app);
+		ArrayList<Experience> expArray = new ArrayList<Experience>();
+		try {
+			while(uExp.next()){
+				Experience sk = new Experience();
+				sk.setExpid(uExp.getInt("exid"));
+				
+				DatabaseMethodsImpl db2 = new DatabaseMethodsImpl();
+				ResultSet exp = db2.getExp(sk);
+					
+					while(exp.next()){
+						boolean eligi = false;
+						Experience exp2= new Experience();
+						exp2.setExpid(exp.getInt("exid"));
+						exp2.setOrganization(exp.getString("organization"));
+						exp2.setDuration(exp.getInt("duration"));
+						exp2.setPost(exp.getString("post"));
+						
+						
+						if(exp.getInt("exeligibility") == 1){
+							eligi = true;
+						}
+						exp2.setExeligibility(eligi);
+					
+						expArray.add(exp2);
+					}
+			
+			
+			}
+		} catch (SQLException e) {
+			log.debug("Get user experience failed : ", e);
+		}
+		return expArray;
 	}
 
 	public ArrayList<Qualifications> getApplicantQualifications(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet uQualifications =db.getApplicantQualifications(app);
+		ArrayList<Qualifications> quaArray = new ArrayList<Qualifications>();
+		try {
+			while(uQualifications.next()){
+				Qualifications qua = new Qualifications();
+				qua.setId(uQualifications.getInt("eid"));
+				
+				DatabaseMethodsImpl db2 = new DatabaseMethodsImpl();
+				ResultSet qua2 = db2.getQualifications(qua);
+					
+					while(qua2.next()){
+						boolean eligi = false;
+						Qualifications qua3= new Qualifications();
+						qua3.setId(qua2.getInt("eid"));
+						qua3.setInstitute(qua2.getString("institute"));
+						qua3.setName(qua2.getString("name"));
+						qua3.setqClass(qua2.getString("class"));
+						
+						
+						if(qua2.getInt("eeligibility") == 1){
+							eligi = true;
+						}
+						qua3.setQualificationsEligibility(eligi);
+					
+						quaArray.add(qua3);
+					}
+			
+			
+			}
+		} catch (SQLException e) {
+			log.debug("Get user qualifcations failed : ", e);
+		}
+		return quaArray;
 	}
-
+	
+	public void trainSkillsNN() {
+		if(flagS == true){
+			NNSkillModelImpl skillNN = new NNSkillModelImpl();
+			log.debug("Training Skill Neural Network : ");
+			flagS = false;
+			log.debug("Skill Neural Network Flag set to False ");
+				if(skillNN.trainAndSaveModel()==1){
+					flagS = true;
+					log.debug("Skill Neural Network Flag set to True ");
+				}
+			}
+	}
+		
 	public void trainQualificationsExperienceNN() {
-		// TODO Auto-generated method stub
+		if(flagQE == true){
+			log.debug("Training Experience + Qualifications Neural Network ");
+		NNQualificationsAndExperience b = new NNQualificationsAndExperience();
+		flagQE = false;
+		log.debug("Experience + Qualifications Neural Network Flag set to False ");
+			if(b.trainAndSaveModel()==1){
+				flagQE = true;
+				log.debug("Experience + Qualifications Neural Network Flag set to True ");
+			}
+		}
+		
 		
 	}
 
 
 	public int evaluateApplicant(Applicants app) {
-		// TODO Auto-generated method stub
-		return 0;
+		int response = 0 ;
+		double skillScore = 0.0;
+		double expQuaScore = 0.0;
+		double finalScore = 0.0;
+		NNQualificationsAndExperience expQua = new NNQualificationsAndExperience();
+		expQuaScore= expQua.loadAndEvaluateModel(app);
+		NNSkillModelImpl skillNN = new NNSkillModelImpl();
+		skillScore=skillNN.loadAndEvaluateModel(app);
+		
+		finalScore = skillScore + expQuaScore;
+		
+		Job j = new Job();
+		j.setExpQuaScore(expQuaScore);
+		j.setSkillScore(skillScore);
+		j.setJobid(1);
+		j.setFinalScore(finalScore);
+		
+		DatabaseMethodsImpl dbInstance = new DatabaseMethodsImpl();
+		if(dbInstance.addApplicantJob(app, j)==1){
+			response=1;
+		}
+		log.debug("Applicant Evaluated");
+		return response;
 	}
 
 	public ArrayList<Job> getUserJobInfo(Applicants app) {
-		// TODO Auto-generated method stub
-		return null;
+	DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+	ResultSet rs = db.getUserJobStatus(app);
+	ArrayList<Job> userJobArray = new ArrayList<Job>();
+	try{
+	while(rs.next()){
+		Job job = new Job();
+		job.setJobid(rs.getInt("id"));
+		job.setExpQuaScore(rs.getDouble("expQuaScore"));
+		job.setSkillScore(rs.getDouble("skillScore"));
+		job.setFinalScore(rs.getDouble("eligibilityFinal"));
+		
+		userJobArray.add(job);
+		}
+	log.debug("Getting User Job Statistics");
+	}catch (Exception e){
+		log.debug("Getting User Job Statistics failed",e);
+	}
+	log.debug("Got User Job Statistics");
+		return userJobArray;
 	}
 
 	public int deleteJob(Job job) {
