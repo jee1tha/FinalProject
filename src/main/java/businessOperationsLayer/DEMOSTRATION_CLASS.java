@@ -6,7 +6,7 @@ import databaseLayer.DatabaseMethodsImpl;
 public class DEMOSTRATION_CLASS {
  public static void main(String[] args) {
 	
-	NNQualificationsAndExperience b = new NNQualificationsAndExperience();
+	NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
 		
 		//b.trainAndSaveModel();
 	/*	int[] applicants =  new int[10];
