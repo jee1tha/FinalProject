@@ -1,12 +1,22 @@
 package businessOperationsLayer;
 
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.warPathType;
+
 import databaseLayer.Applicants;
 import databaseLayer.DatabaseMethodsImpl;
+import databaseLayer.Experience;
+import databaseLayer.Qualifications;
+import databaseLayer.Skills;
 
 public class DEMOSTRATION_CLASS {
- public static void main(String[] args) {
-	
-	NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
+	 private static final Logger log = Logger.getLogger(DEMOSTRATION_CLASS.class);
+
+	public static void main(String[] args) {
+//	NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
 		
 		//b.trainAndSaveModel();
 	/*	int[] applicants =  new int[10];
@@ -32,11 +42,12 @@ public class DEMOSTRATION_CLASS {
 			}
 	
 	*/
-	
+//	BOLMethodsImpl bz = new BOLMethodsImpl();
+//	bz.trainQualificationsExperienceNN();
 		// SKILLS TESTING
 	/*	NNSkillModelImpl g = new NNSkillModelImpl();
-		// g.trainAndSaveModel();
-		int[] applicant =  new int[10];
+		 g.trainAndSaveModel();*/
+		/*int[] applicant =  new int[10];
 		applicant[0] = 3;
 		applicant[1] = 5;
 		applicant[2] = 6;
@@ -60,12 +71,12 @@ public class DEMOSTRATION_CLASS {
 				
 				System.out.println(score2[i]);
 				} 
-	*/
+	
 		  
 	BOLMethodsImpl z = new BOLMethodsImpl();
 	Applicants ap = new Applicants();
 	ap.setAppID(3);
-	z.evaluateApplicant(ap);
+	z.evaluateApplicant(ap);*/
 /*	for(int i = 0 ; i <z.getApplicantSkills(ap).size(); i++){
 		System.out.println(	z.getApplicantSkills(ap).get(i).getSkill());
 		System.out.println(z.getApplicantSkills(ap).get(i).getSeligibility());
@@ -74,6 +85,44 @@ public class DEMOSTRATION_CLASS {
 	
 
 	}*/
+/*		BOLMethodsImpl n  = new BOLMethodsImpl();
+		Skills sk = new  Skills();
+		ArrayList<String> array = new ArrayList<String>();
+		array.add("boostrap");
+		array.add("css");
+		array.add("java");
+		array.add("grunt");
+		array.add("gulp");
 		
+		sk.setSkillName(array);
+		
+		Applicants app = new Applicants();
+		app.setAppID(13);
+		n.addUserSkills(app, sk);*/
+	 
+/*	 BOLMethodsImpl n  = new BOLMethodsImpl();
+	 Applicants ap = new Applicants();
+	 ap.setAppID(13);
+	 
+	 Qualifications q = new Qualifications();
+	 q.setName("HND");
+	 q.setInstitute("ICBT");
+	 q.setqClass("Distinction");
+	 
+	 
+	 System.out.println(n.addUserQualifications(ap, q));*/
+		
+	 BOLMethodsImpl n  = new BOLMethodsImpl();
+	 Applicants ap = new Applicants();
+	 ap.setAppID(13);
+	 
+	 Experience a = new Experience();
+	 a.setOrganization("Lentons");
+	 a.setPost("Intern Software Developer");
+	 a.setDuration(2);
+	 
+	 n.addUserExperience(ap, a);
+	 
 }
+ 
 }

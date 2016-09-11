@@ -82,7 +82,7 @@ public class BOLMethodsImpl implements BOLMethods{
 				result = db.addSkills(skill);
 				log.debug("New Skill Added" );
 			}
-			
+			log.debug("Skills already exists" );
 			
 		} catch (SQLException e) {
 			
@@ -99,7 +99,9 @@ public class BOLMethodsImpl implements BOLMethods{
 			if(rs.next()==false){
 				result = db.addExp(exp);
 				log.debug("New Experience Added" );
-			}
+			}else{
+                            log.debug("New Experience aleady exists" );
+                        }
 			
 			
 		} catch (SQLException e) {
@@ -116,8 +118,10 @@ public class BOLMethodsImpl implements BOLMethods{
 		try {
 			if(rs.next()==false){
 				result = db.addQualifications(qualification);
-				log.debug("New Experience Added" );
-			}
+				log.debug("New Qualification Added" );
+			}else{
+                            log.debug("New Qualification already exists" );
+                        }
 			
 			
 		} catch (SQLException e) {
@@ -545,6 +549,81 @@ public class BOLMethodsImpl implements BOLMethods{
 	public int deleteJob(Job job) {
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
 		return db.deleteJob(job);
+	}
+
+	public int addUserJob(Applicants app, Job job) {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		return db.addApplicantJob(app, job);
+		 
+	}
+
+	public int addUserSkills(Applicants app, Skills skill) {
+		int result = 0;
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		BOLMethodsImpl bl = new BOLMethodsImpl();
+		for(int i=0;i< skill.getSkillName().size();i++){
+			try {Skills sk = new Skills();
+			sk.setSkill(skill.getSkillName().get(i));
+			if(bl.addSkills(sk)==1){
+				System.out.println("new skills added");
+			}else{
+				System.out.println("skill aleady exists");
+			}
+			ResultSet r = db.getSkills(sk);
+		
+				while(r.next()){
+				sk.setSkillID(r.getInt("sid"));
+			result=+ db.addApplicantSkills(app, sk);
+				log.debug("applicant skill #"+i+ " added");
+				}
+				} catch (SQLException e) {
+					log.debug("Adding applicant skills failed",e);
+			}
+		
+		}
+		return result;
+	}
+
+	public int addUserQualifications(Applicants app, Qualifications qua) {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		BOLMethodsImpl bl = new BOLMethodsImpl();
+		int result = 0 ;
+		
+		try {
+			bl.addQualifications(qua) ;
+			ResultSet q = db.getQualifications(qua);
+			Qualifications qualification = new Qualifications();
+			q.next();
+			qualification.setId(q.getInt("eid"));
+			result = db.addApplicantQualifcations(app, qualification);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.debug("Adding applicant qualifications failed",e);
+		}
+		
+		return result;
+	}
+
+	public int addUserExperience(Applicants app, Experience exp) {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		BOLMethodsImpl bl = new BOLMethodsImpl();
+		int result = 0 ;
+		
+		try {
+			if(bl.addExperience(exp) == 1){
+				log.debug("new experience added" );
+			}
+			ResultSet q = db.getExp(exp);
+			Experience ex = new Experience();
+			q.next();
+			ex.setExpid(q.getInt("exid"));
+			result = db.addApplicantExp(app, ex);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			log.debug("Adding applicant experience failed",e);
+		}
+		
+		return result;
 	}
 	
 
