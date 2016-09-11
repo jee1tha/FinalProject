@@ -73,6 +73,15 @@ public interface BOLMethods {
 	public int deleteQualifications(Qualifications qualifications);
 	
 	public int deleteJob( Job job);
+        
+        
+	public int addUserJob(Applicants app, Job job);
+        
+	public int addUserSkills(Applicants app,Skills skill);
+        
+	public int addUserQualifications(Applicants app, Qualifications qua);
+	
+	public int addUserExperience(Applicants app, Experience exp);
 	
 	
 }

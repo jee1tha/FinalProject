@@ -35,7 +35,7 @@ public class SingletonDB {
 	      Class.forName("com.mysql.jdbc.Driver");
 
 	      //STEP 3: Open a connection
-	      System.out.println("Connecting to database...");
+	   //   System.out.println("Connecting to database...");
 	      instance = DriverManager.getConnection(DB_URL,USER,PASS);
 		} catch (Exception e){
 			e.printStackTrace();
