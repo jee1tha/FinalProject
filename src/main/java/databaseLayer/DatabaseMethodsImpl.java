@@ -1195,6 +1195,27 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		return result;
 	}
 
+	public ResultSet getUserEvaluationAll() {
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+			String query = "SELECT * FROM ingrow.userjob order by eligibilityFinal DESC";
+			
+			try {
+
+				results = newDb.getdata(query);
+
+				log.debug("get all user evaluations ordered by Descending order executed");
+
+			} catch (Exception e) {
+
+				log.debug("get all user evaluations ordered by Descending order query failed : ", e);
+			}
+
+		return results;
+	}
+
 
 
 

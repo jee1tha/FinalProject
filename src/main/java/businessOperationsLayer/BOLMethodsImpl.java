@@ -531,7 +531,8 @@ public class BOLMethodsImpl implements BOLMethods{
 	try{
 	while(rs.next()){
 		Job job = new Job();
-		job.setJobid(rs.getInt("id"));
+		job.setApplicantID(rs.getInt("id"));
+		job.setJobid(rs.getInt("jid"));
 		job.setExpQuaScore(rs.getDouble("expQuaScore"));
 		job.setSkillScore(rs.getDouble("skillScore"));
 		job.setFinalScore(rs.getDouble("eligibilityFinal"));
@@ -624,6 +625,40 @@ public class BOLMethodsImpl implements BOLMethods{
 		}
 		
 		return result;
+	}
+
+	public ArrayList<Job> getUserEvaluationAll() {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet rs = db.getUserEvaluationAll();
+		ArrayList<Job> userAllJobArray = new ArrayList<Job>();
+		try{
+		while(rs.next()){
+			Job job = new Job();
+			job.setApplicantID(rs.getInt("id"));
+			job.setJobid(rs.getInt("jid"));
+			job.setExpQuaScore(rs.getDouble("expQuaScore"));
+			job.setSkillScore(rs.getDouble("skillScore"));
+			job.setFinalScore(rs.getDouble("eligibilityFinal"));
+			
+			userAllJobArray.add(job);
+			}
+		log.debug("Getting All Users  Job Statistics ordered list");
+		}catch (Exception e){
+			log.debug("Getting All Users  Job Statistics ordered lists failed",e);
+		}
+		log.debug("Got All Users Job Statistics ordered list");
+			return userAllJobArray;
+	}
+
+	public int addUserInformation(Applicants app, Job job, Qualifications qua, Experience exp,Skills skill) {
+		int r = 0 ;
+		BOLMethodsImpl b  = new BOLMethodsImpl();
+		r=+ b.addUserJob( app,  job);    
+		r=+ b.addUserSkills( app, skill);      
+		r=+ b.addUserQualifications( app,  qua);
+		r=+ b.addUserExperience( app,  exp);
+		r=+ b.evaluateApplicant(app);
+		return r;
 	}
 	
 

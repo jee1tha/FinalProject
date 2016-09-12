@@ -77,5 +77,6 @@ public interface DatabaseMethods {
 	
 	public ResultSet getApplicantExperience(Applicants app);
 	
+	public ResultSet getUserEvaluationAll();
 	
 }
