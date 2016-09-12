@@ -45,6 +45,8 @@ public interface BOLMethods {
 	
 	public ArrayList<Job> getUserJobInfo(Applicants app);
 	
+	public ArrayList<Job> getUserEvaluationAll();
+	
 	
 	public ArrayList<Skills> getSkillInfo(Skills skill);
 	
@@ -82,6 +84,8 @@ public interface BOLMethods {
 	public int addUserQualifications(Applicants app, Qualifications qua);
 	
 	public int addUserExperience(Applicants app, Experience exp);
+	
+	public int addUserInformation(Applicants app,Job job,Qualifications qua,Experience exp,Skills skill);
 	
 	
 }

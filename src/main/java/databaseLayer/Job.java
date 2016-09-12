@@ -9,6 +9,15 @@ public class Job {
 	public double skillScore;
 	public double expQuaScore;
 	public double finalScore;
+	public int applicantID;
+	
+	public int getApplicantID() {
+		return applicantID;
+	}
+	
+	public void setApplicantID(int applicantID) {
+		this.applicantID = applicantID;
+	}
 	
 	public double getSkillScore() {
 		return skillScore;
