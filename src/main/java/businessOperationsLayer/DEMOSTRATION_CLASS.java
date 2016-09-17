@@ -131,10 +131,6 @@ public class DEMOSTRATION_CLASS {
     	 System.out.println(n.getSkillAll().get(i).getSkill());
      }*/
  
- int x = 1;
-	String textboxname = "txtSkill" + x;
-	
-	System.out.println(textboxname);
-}
-	
+ n.trainSkillsNN();
+	}
 }

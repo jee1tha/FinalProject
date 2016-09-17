@@ -1,5 +1,0 @@
-2016-09-16 19:57:29 DEBUG DatabaseMethodsImpl:1058 - get user qualifications query executed
-2016-09-16 19:57:29 DEBUG DatabaseMethodsImpl:1127 - get user exp query executed
-2016-09-16 19:57:29 DEBUG DatabaseMethodsImpl:1093 - get userskills query executed
-2016-09-16 19:57:29 DEBUG DatabaseMethodsImpl:879 - insert user job  query executed
-2016-09-16 19:57:29 DEBUG BOLMethodsImpl:500 - Applicant Evaluated

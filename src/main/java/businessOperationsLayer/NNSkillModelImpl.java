@@ -24,7 +24,7 @@ import java.io.OutputStream;
 
 public class NNSkillModelImpl implements NNModels {
 
-	public static  String FILENAME = "src/main/resources/skills_network.eg";
+	public static  String FILENAME = "C:/My Stuff/Assignments/Project Ingrow/Final/src/main/resources/skills_network.eg";
 
 	private static final Logger log = Logger.getLogger(NNSkillModelImpl.class);
 
@@ -154,12 +154,11 @@ public class NNSkillModelImpl implements NNModels {
 				System.out.println("Epoch #" + epoch + " Error:" + train.getError() );
 				epoch++;
 
-			} while (train.getError() > 0.001);
+			} while (train.getError() > 0.5);
 
 			double e = networkSkills.calculateError(trainingSet);
 			System.out.println("Network Skills trained to error :" + e);
 			System.out.println("Saving Network (Skills) ");
-                           
 			EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
 			log.debug("Training Skill Network success at Epoch #" + epoch);
 		} catch (Exception e) {

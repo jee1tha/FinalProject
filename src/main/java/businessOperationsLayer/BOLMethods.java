@@ -70,9 +70,9 @@ public interface BOLMethods {
 	public ArrayList<Qualifications> getQualificationsAll();
 	
 	
-	public void trainSkillsNN();
+	public int trainSkillsNN();
 	
-	public void trainQualificationsExperienceNN();
+	public int trainQualificationsExperienceNN();
 	
 	public int evaluateApplicant(Applicants app);
 	
