@@ -2,7 +2,7 @@ package businessOperationsLayer;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.io.InputStream;
 import org.apache.log4j.Logger;
 import org.encog.engine.network.activation.ActivationBiPolar;
 import org.encog.engine.network.activation.ActivationSigmoid;
@@ -21,8 +21,8 @@ import databaseLayer.DatabaseMethodsImpl;
 import databaseLayer.Experience;
 import databaseLayer.Qualifications;
 public class NNQualificationsAndExperienceImpl implements NNModels{
-	public static final String FILENAME = "qualifications_network.eg";
-
+	public static  String FILENAME = "src/main/resources/qualifications_network.eg";
+                                                
 	private static final Logger log = Logger.getLogger(NNQualificationsAndExperienceImpl.class);
 	
 	public static void main(String[] args) {
@@ -294,7 +294,8 @@ public class NNQualificationsAndExperienceImpl implements NNModels{
 			log.debug("Reading qualifications/experience of user from DB failed at loadandEvaluate Method", e);
 		}
 		System.out.println("Loading Network qualifications and experience ");
-		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(FILENAME));
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("qualifications_network.eg") ;
+		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(input);
 
 		double[] output = new double[1];
 		network.compute(user, output);

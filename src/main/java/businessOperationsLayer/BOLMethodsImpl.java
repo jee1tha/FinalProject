@@ -13,6 +13,7 @@ import databaseLayer.Experience;
 import databaseLayer.Job;
 import databaseLayer.Qualifications;
 import databaseLayer.Skills;
+import databaseLayer.Users;
 
 public class BOLMethodsImpl implements BOLMethods{
 	
@@ -22,7 +23,7 @@ public class BOLMethodsImpl implements BOLMethods{
 	public int RegisterUser(Applicants app) {
 		int result = 0;
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
-		if(db.checkApplicantUsername(app) == false){
+		if(db.checkUsername(app) == false){
 			result = db.addApplicant(app);
 		}
 		
@@ -32,44 +33,20 @@ public class BOLMethodsImpl implements BOLMethods{
 	public int RegisterAdmin(Admin admin) {
 		int result = 0;
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
-		if(db.checkAdminUsername(admin)==false){
+		if(db.checkUsername(admin)==false){
 			result = db.addAdmin(admin); 
 		}
 		return result;
 	}
 
-	public int LoginUser(Applicants app) {
-		int result = 0;
+	public String LoginUser(Users user) {
+		String result = null;
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
-		ResultSet rs = db.getApplicantDetails(app);
-		try {
-			if(rs.next()){
-				result = 1;
-				log.debug("Login applicant found" );
-			}
-		} catch (SQLException e) {
-			
-			log.debug("Login applicant  failed : ", e);
-		}
-		return result;
+		String rs = db.login(user);
+		
+		return rs;
 	}
 
-	public int LoginAdmin(Admin admin) {
-		int result = 0;
-		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
-		ResultSet rs = db.getAdminDetails(admin);
-		try {
-			if(rs.next()){
-				result = 1;
-				log.debug("Login admin found" );
-			}
-			
-		} catch (SQLException e) {
-			
-			log.debug("Login admin  failed : ", e);
-		}
-		return result;
-	}
 
 	public int addSkills(Skills skill) {
 		int result = 0;
@@ -468,18 +445,108 @@ public class BOLMethodsImpl implements BOLMethods{
 		}
 		return quaArray;
 	}
+	public ArrayList<Skills> getSkillAll() {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet skills =db.getSkillAll();
+		ArrayList<Skills> skillArray = new ArrayList<Skills>();
+		try {
+				
+					while(skills.next()){
+						boolean eligi = false;
+						Skills sk2= new Skills();
+						sk2.setSkill(skills.getString("name"));
+						if(skills.getInt("seligibility") == 1){
+							eligi = true;
+						}
+						sk2.setSeligibility(eligi);
+						sk2.setSkillID(skills.getInt("sid"));
+						skillArray.add(sk2);
+					}
+			
+					log.debug("Get All skills Successful");
+
+			
+		} catch (SQLException e) {
+			log.debug("Get All skills failed : ", e);
+		}
+		return skillArray;
+	}
+
+	public ArrayList<Experience> getExpAll() {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet exp =db.getExpAll();
+		ArrayList<Experience> expArray = new ArrayList<Experience>();
+		try {
+		
+					
+					while(exp.next()){
+						boolean eligi = false;
+						Experience exp2= new Experience();
+						exp2.setExpid(exp.getInt("exid"));
+						exp2.setOrganization(exp.getString("organization"));
+						exp2.setDuration(exp.getInt("duration"));
+						exp2.setPost(exp.getString("post"));
+						
+						
+						if(exp.getInt("exeligibility") == 1){
+							eligi = true;
+						}
+						exp2.setExeligibility(eligi);
+					
+						expArray.add(exp2);
+					}
+					log.debug("Get All experience Successful ");
+			
+	
+		} catch (SQLException e) {
+			log.debug("Get All experience failed : ", e);
+		}
+		return expArray;
+	}
+
+
+	public ArrayList<Qualifications> getQualificationsAll() {
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		ResultSet AQualifications =db.getQualificationsAll();
+		ArrayList<Qualifications> qualificationsAllArray = new ArrayList<Qualifications>();
+		try {
+	
+					while(AQualifications.next()){
+						boolean eligi = false;
+						Qualifications qualificationsAll= new Qualifications();
+						qualificationsAll.setId(AQualifications.getInt("eid"));
+						qualificationsAll.setInstitute(AQualifications.getString("institute"));
+						qualificationsAll.setName(AQualifications.getString("name"));
+						qualificationsAll.setqClass(AQualifications.getString("class"));
+						
+						
+						if(AQualifications.getInt("eeligibility") == 1){
+							eligi = true;
+						}
+						qualificationsAll.setQualificationsEligibility(eligi);
+					
+						qualificationsAllArray.add(qualificationsAll);
+					}
+					log.debug("Get All qualifcations Successful  ");
+			
+			
+		} catch (SQLException e) {
+			log.debug("Get All qualifcations failed : ", e);
+		}
+		return qualificationsAllArray;
+	}
 	
 	public void trainSkillsNN() {
-		if(flagS == true){
+	//	if(flagS == true){
 			NNSkillModelImpl skillNN = new NNSkillModelImpl();
 			log.debug("Training Skill Neural Network : ");
-			flagS = false;
+		//	flagS = false;
 			log.debug("Skill Neural Network Flag set to False ");
 				if(skillNN.trainAndSaveModel()==1){
-					flagS = true;
+				//	flagS = true;
 					log.debug("Skill Neural Network Flag set to True ");
 				}
-			}
+		//	}
 	}
 		
 	public void trainQualificationsExperienceNN() {
@@ -567,8 +634,11 @@ public class BOLMethodsImpl implements BOLMethods{
 			sk.setSkill(skill.getSkillName().get(i));
 			if(bl.addSkills(sk)==1){
 				System.out.println("new skills added");
+				log.debug("new skill added");
 			}else{
 				System.out.println("skill aleady exists");
+				log.debug("skill aleady exists");
+
 			}
 			ResultSet r = db.getSkills(sk);
 		
@@ -582,6 +652,7 @@ public class BOLMethodsImpl implements BOLMethods{
 			}
 		
 		}
+                skill.setSkillName(null);
 		return result;
 	}
 
@@ -636,6 +707,7 @@ public class BOLMethodsImpl implements BOLMethods{
 			Job job = new Job();
 			job.setApplicantID(rs.getInt("id"));
 			job.setJobid(rs.getInt("jid"));
+			String z = rs.getString("expQuaScore");
 			job.setExpQuaScore(rs.getDouble("expQuaScore"));
 			job.setSkillScore(rs.getDouble("skillScore"));
 			job.setFinalScore(rs.getDouble("eligibilityFinal"));
@@ -653,14 +725,31 @@ public class BOLMethodsImpl implements BOLMethods{
 	public int addUserInformation(Applicants app, Job job, Qualifications qua, Experience exp,Skills skill) {
 		int r = 0 ;
 		BOLMethodsImpl b  = new BOLMethodsImpl();
-		r=+ b.addUserJob( app,  job);    
-		r=+ b.addUserSkills( app, skill);      
-		r=+ b.addUserQualifications( app,  qua);
-		r=+ b.addUserExperience( app,  exp);
-		r=+ b.evaluateApplicant(app);
+		// r=r + b.addUserJob( app,  job);    
+		r=r + b.addUserSkills( app, skill);      
+		r=r + b.addUserQualifications( app,  qua);
+		r=r + b.addUserExperience( app,  exp);
+		r=r + b.evaluateApplicant(app);
 		return r;
 	}
-	
+
+	public boolean checkUserJob(Job job, Applicants app) {
+		DatabaseMethodsImpl b  = new DatabaseMethodsImpl();
+		ResultSet z = b.checkUserJob(app, job);
+		boolean response = false;
+		try {
+			if(z.next()){
+				response = true;
+			}else{
+				response= false;
+			}
+		} catch (SQLException e) {
+			log.debug("failed to if user has already applied for the same job",e);
+		}
+		return response;
+	}
+
+
 
 
 
