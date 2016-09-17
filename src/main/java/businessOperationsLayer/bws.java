@@ -258,6 +258,13 @@ public class bws {
 
     }
 
+    @WebMethod(operationName = "evaluateAllApplicants")
+    public int evaluateAllApplicants() {
+        BOLMethodsImpl obj = new BOLMethodsImpl();
+
+        return obj.evaluateAllApplicants();
+
+    }
     @WebMethod(operationName = "deleteskill")
     public int deleteskill(@WebParam(name = "skillObj") Skills skill) {
         BOLMethodsImpl obj = new BOLMethodsImpl();

@@ -131,6 +131,6 @@ public class DEMOSTRATION_CLASS {
     	 System.out.println(n.getSkillAll().get(i).getSkill());
      }*/
  
- n.trainSkillsNN();
+ System.out.println(n.evaluateAllApplicants());
 	}
 }

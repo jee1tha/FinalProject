@@ -76,6 +76,7 @@ public interface BOLMethods {
 	
 	public int evaluateApplicant(Applicants app);
 	
+        public int evaluateAllApplicants ();
 	
 	public int deleteskill( Skills skill);
 	

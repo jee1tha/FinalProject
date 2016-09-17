@@ -32,6 +32,7 @@ public interface DatabaseMethods {
 	
 	public int addQualifications(Qualifications qualification); // adding qualifications
 	
+	public int updateEvaluatedApplicant(Applicants app, Job job);
 	
 	public ResultSet getSkills(Skills skill); // get skills
 	
