@@ -108,26 +108,16 @@ public class BOLMethodsImplTest {
         app.setPassword("unitTest");
         BOLMethodsImpl instance = new BOLMethodsImpl();
         int expResult = 1;
-        int result = instance.LoginUser(app);
+        int result = 0;
+        String x = instance.LoginUser(app);
+        if(x !="fail"){
+            result = 1;
+        }
         assertEquals(expResult, result);
    
     }
 
-    /**
-     * Test of LoginAdmin method, of class BOLMethodsImpl.
-     */
-    @Test
-    public void testDLoginAdmin() {
-        System.out.println("LoginAdmin");
-        Admin admin = new Admin();
-        admin.setUsername("unitTestADMINUSERNAME");
-        admin.setPassword("unitTestADMINPW");
-        BOLMethodsImpl instance = new BOLMethodsImpl();
-        int expResult = 1;
-        int result = instance.LoginAdmin(admin);
-        assertEquals(expResult, result);
-      
-    }
+ 
     /**
      * Test of add job  method, of class BOLMethodsImpl.
      */

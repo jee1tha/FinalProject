@@ -282,6 +282,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			if (job.getName() != null) {
 				query = "Select * from  `ingrow`.`job` WHERE name ='" + job.getName() + "' ";
 			}
+			if (job.getName() == null && job.getJobid() == 0) {
+				query = "Select * from  `ingrow`.`job`  ";
+			}
 			try {
 
 				results = newDb.getdata(query);
@@ -629,9 +632,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		ResultSet results = null;
 		
 		DBHandler newDb = new DBHandler();
-		
-		String query = "";
 		// Creating object to get the database connection method
+		String query = "";
+		
 
 		try {
 			if (qualification.getId() != 0) {
@@ -683,8 +686,9 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		int result = 0;
 		int eli = 0;
 		DBHandler newDb = new DBHandler();
-		String query = null;
 		// Creating object to get the database connection method
+		String query = null;
+		
 		if(skill.getSeligibility() == true ){
 			eli = 1;
 		}
@@ -888,16 +892,17 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 		return result;
 	}
 
-	public boolean checkApplicantUsername(Applicants app) {
-
+	
+	
+	public boolean checkUsername(Users user) {
 		boolean results = false;
 		DBHandler newDb = new DBHandler();
 		String query = "";
 		// Creating object to get the database connection method
 
 		try {
-			if (app.getUsername() != null) {
-				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' ";
+			if (user.getUsername() != null) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + user.getUsername() + "' ";
 			}
 			
 			try {
@@ -906,49 +911,52 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 				if(result.next()){
 					results = true;
 				}
-				log.debug("get users query executed");
+				log.debug("get Username query executed");
 
 			} catch (Exception e) {
 
-				log.debug("get users query failed : ", e);
+				log.debug("get Username query failed : ", e);
 			}
 
 		} catch (Exception e) {
 
-			log.debug("get users failed : ", e);
+			log.debug("get Username failed : ", e);
 
 		}
 
 		return results;
 	}
 	
-	public boolean checkAdminUsername(Admin app) {
-		boolean results = false;
+	public String login(Users user) {
+		String results = null;
 		DBHandler newDb = new DBHandler();
 		String query = "";
 		// Creating object to get the database connection method
 
 		try {
-			if (app.getUsername() != null) {
-				query = "Select * from  `ingrow`.`users` WHERE username ='" + app.getUsername() + "' ";
+			if (user.getUsername() != null && user.getPassword() != null ) {
+				query = "Select * from  `ingrow`.`users` WHERE username ='" + user.getUsername() + "' AND password='"+ user.getPassword() +"' ";
 			}
 			
 			try {
 
 				ResultSet result = newDb.getdata(query);
 				if(result.next()){
-					results = true;
+					
+					results = result.getString("role");
+				}else{
+					results = "fail";
 				}
-				log.debug("get ADMIN query executed");
+				log.debug("Login query executed for"+ user.getUsername());
 
 			} catch (Exception e) {
 
-				log.debug("get ADMIN query failed : ", e);
+				log.debug("Login query failed : ", e);
 			}
 
 		} catch (Exception e) {
 
-			log.debug("get ADMIN failed : ", e);
+			log.debug("get Username failed : ", e);
 
 		}
 
@@ -991,6 +999,43 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 		return results;
 	}
+	public ResultSet checkUserJob(Applicants app,Job job) {
+
+
+
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+		// Creating object to get the database connection method
+
+		try {
+			if (app.getAppID() != 0) {
+				query = "Select * from  `ingrow`.`userjob` WHERE id ='" + app.getAppID() + "' AND jid='"+job.getJobid()+ "'";
+			}
+			
+		
+			try {
+
+				results = newDb.getdata(query);
+
+				log.debug("get userjob query executed");
+
+			} catch (Exception e) {
+
+				log.debug("get userjob query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("get userjob failed : ", e);
+
+		}
+
+		return results;
+	}
+
 
 	public ResultSet getApplicantQualifications(Applicants app) {
 
@@ -1212,6 +1257,82 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 				log.debug("get all user evaluations ordered by Descending order query failed : ", e);
 			}
+
+		return results;
+	}
+
+	public ResultSet getSkillAll() {
+
+		ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+	
+
+		try {
+		
+				query = "Select * from  `ingrow`.`skill` ";
+				results = newDb.getdata(query);
+
+				log.debug("get All skills query executed");
+
+
+		} catch (Exception e) {
+
+			log.debug("get All skills failed : ", e);
+
+		}
+
+		return results;
+	}
+
+	public ResultSet getExpAll() {
+	ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+	
+
+		try {
+		
+				query = "Select * from  `ingrow`.`experience` ";
+				results = newDb.getdata(query);
+
+				log.debug("get All experience query executed");
+
+
+		} catch (Exception e) {
+
+			log.debug("get All experience failed : ", e);
+
+		}
+
+		return results;
+	}
+
+	public ResultSet getQualificationsAll() {
+	ResultSet results = null;
+		
+		DBHandler newDb = new DBHandler();
+		
+		String query = "";
+	
+
+		try {
+		
+				query = "Select * from  `ingrow`.`educationqualifications` ";
+				results = newDb.getdata(query);
+
+				log.debug("get All education qualifications query executed");
+
+
+		} catch (Exception e) {
+
+			log.debug("get All education qualifications failed : ", e);
+
+		}
 
 		return results;
 	}

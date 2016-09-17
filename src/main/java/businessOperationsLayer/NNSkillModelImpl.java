@@ -1,6 +1,7 @@
 package businessOperationsLayer;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ import org.encog.persist.EncogDirectoryPersistence;
 import databaseLayer.DatabaseMethodsImpl;
 import databaseLayer.Skills;
 import databaseLayer.*;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class NNSkillModelImpl implements NNModels {
 
-	public static final String FILENAME = "skills_network.eg";
+	public static  String FILENAME = "src/main/resources/skills_network.eg";
 
 	private static final Logger log = Logger.getLogger(NNSkillModelImpl.class);
 
@@ -71,7 +74,9 @@ public class NNSkillModelImpl implements NNModels {
 		}
 
 		int count = rowCal / 5; // determining the list parent array size
-
+		if(rowCal%5 != 0){
+			count++;
+		}
 		double SKILL_INPUT[][] = new double[count][5]; // 5 input neurons
 		double SKILL_IDEAL[][] = new double[count][1]; // 1 input neuron
 		// add retrieved skills to input and ideal out put arrays
@@ -154,7 +159,7 @@ public class NNSkillModelImpl implements NNModels {
 			double e = networkSkills.calculateError(trainingSet);
 			System.out.println("Network Skills trained to error :" + e);
 			System.out.println("Saving Network (Skills) ");
-
+                           
 			EncogDirectoryPersistence.saveObject(new File(FILENAME), networkSkills);
 			log.debug("Training Skill Network success at Epoch #" + epoch);
 		} catch (Exception e) {
@@ -179,7 +184,8 @@ public class NNSkillModelImpl implements NNModels {
 			log.debug("Reading Skills of user from DB failed at loadandEvaluate Method", e);
 		}
 		System.out.println("Loading Network Skills ");
-		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(FILENAME));
+		InputStream input2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("skills_network.eg") ;
+		BasicNetwork network = (BasicNetwork) EncogDirectoryPersistence.loadObject(input2);
 
 		double[] output = new double[1];
 		network.compute(user, output);

@@ -8,6 +8,7 @@ import databaseLayer.Experience;
 import databaseLayer.Job;
 import databaseLayer.Qualifications;
 import databaseLayer.Skills;
+import databaseLayer.Users;
 
 public interface BOLMethods {
  
@@ -19,9 +20,9 @@ public interface BOLMethods {
 	
 	public int deleteUsers(Applicants app);
 	
-	public int LoginUser(Applicants app);
+	public String LoginUser(Users user);
 	
-	public int LoginAdmin(Admin admin);
+
 	
 	public int addSkills(Skills skill);
 	
@@ -47,6 +48,8 @@ public interface BOLMethods {
 	
 	public ArrayList<Job> getUserEvaluationAll();
 	
+	public boolean checkUserJob (Job job, Applicants app);
+	
 	
 	public ArrayList<Skills> getSkillInfo(Skills skill);
 	
@@ -59,6 +62,12 @@ public interface BOLMethods {
 	public ArrayList<Experience> getApplicantExp(Applicants app);
 	
 	public ArrayList<Qualifications> getApplicantQualifications(Applicants app);
+	
+public ArrayList<Skills> getSkillAll();
+	
+	public ArrayList<Experience> getExpAll();
+	
+	public ArrayList<Qualifications> getQualificationsAll();
 	
 	
 	public void trainSkillsNN();

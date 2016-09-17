@@ -1,14 +1,28 @@
 package databaseLayer;
 
-public class Job {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public class Job {
+        @XmlElement(name="jobid")
 	public int jobid;
+         @XmlElement(name="name")
 	private String name;
+          @XmlElement(name="jobDescription")
 	public String jobDescription;
+           @XmlElement(name="eligibility")
 	public double eligibility;
+            @XmlElement(name="skillScore")
 	public double skillScore;
+             @XmlElement(name="expQuaScore")
 	public double expQuaScore;
+              @XmlElement(name="finalScore")
 	public double finalScore;
+          @XmlElement(name="applicantID")
 	public int applicantID;
 	
 	public int getApplicantID() {

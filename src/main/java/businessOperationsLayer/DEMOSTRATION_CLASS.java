@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.warPathType;
+
 
 import databaseLayer.Applicants;
 import databaseLayer.DatabaseMethodsImpl;
@@ -112,17 +112,24 @@ public class DEMOSTRATION_CLASS {
 	 
 	 System.out.println(n.addUserQualifications(ap, q));*/
 		
-	 BOLMethodsImpl n  = new BOLMethodsImpl();
-	 Applicants ap = new Applicants();
-	 ap.setAppID(13);
-	 
-	 Experience a = new Experience();
+ BOLMethodsImpl n  = new BOLMethodsImpl();
+ /*	double z = n.getUserEvaluationAll().get(0).finalScore;
+	System.out.println(z);*/
+	/* Applicants ap = new Applicants();
+	 ap.setAppID(45);*/
+	// System.out.print(n.evaluateApplicant(ap));
+	
+	// n.trainSkillsNN();
+	 /*Experience a = new Experience();
 	 a.setOrganization("Lentons");
 	 a.setPost("Intern Software Developer");
 	 a.setDuration(2);
 	 
-	 n.addUserExperience(ap, a);
-	 
+	 n.addUserExperience(ap, a);*/
+ 
+     for(int i = 0; i< n.getSkillAll().size()  ; i++){
+    	 System.out.println(n.getSkillAll().get(i).getSkill());
+     }
 }
  
 }
