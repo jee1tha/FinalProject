@@ -4,4 +4,9 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-</web-app>
+
+<context-param>
+        <param-name>log4jContextName</param-name>
+        <param-value>WEB-INF/log4j.properties</param-value>
+    </context-param>
+    </web-app>

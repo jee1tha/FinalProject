@@ -536,30 +536,35 @@ public class BOLMethodsImpl implements BOLMethods{
 		return qualificationsAllArray;
 	}
 	
-	public void trainSkillsNN() {
+	public int trainSkillsNN() {
 	//	if(flagS == true){
+        int result = 0;
 			NNSkillModelImpl skillNN = new NNSkillModelImpl();
 			log.debug("Training Skill Neural Network : ");
 		//	flagS = false;
 			log.debug("Skill Neural Network Flag set to False ");
 				if(skillNN.trainAndSaveModel()==1){
 				//	flagS = true;
+                                result=1;
 					log.debug("Skill Neural Network Flag set to True ");
 				}
 		//	}
+                return result;
 	}
 		
-	public void trainQualificationsExperienceNN() {
-		if(flagQE == true){
+	public int trainQualificationsExperienceNN() {
+		//if(flagQE == true){
+                    int result = 0;
 			log.debug("Training Experience + Qualifications Neural Network ");
 		NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
-		flagQE = false;
+		//flagQE = false;
 		log.debug("Experience + Qualifications Neural Network Flag set to False ");
-			if(b.trainAndSaveModel()==1){
-				flagQE = true;
+			if(b.trainAndSaveModel()==1)
+                        {
+				//flagQE = true;
 				log.debug("Experience + Qualifications Neural Network Flag set to True ");
 			}
-		}
+		return result;
 		
 		
 	}

@@ -18,258 +18,283 @@ import javax.jws.WebParam;
 @WebService(serviceName = "bws")
 public class bws {
 
-@WebMethod(operationName = "RegisterUser")
-   public int RegisterUser(@WebParam(name = "userObj") Applicants app) {
-       BOLMethodsImpl obj = new BOLMethodsImpl();
-       
-       return obj.RegisterUser(app) ;
-       
-   }
-    
+    @WebMethod(operationName = "trainSkillsNN")
+    public int trainSkillsNN() {
+        BOLMethodsImpl obj = new BOLMethodsImpl();
+
+        return obj.trainSkillsNN();
+
+    }
+
+    @WebMethod(operationName = "trainQualificationsExperienceNN")
+    public int trainQualificationsExperienceNN() {
+        BOLMethodsImpl obj = new BOLMethodsImpl();
+
+        return obj.trainQualificationsExperienceNN();
+
+    }
+
+    @WebMethod(operationName = "RegisterUser")
+    public int RegisterUser(@WebParam(name = "userObj") Applicants app) {
+        BOLMethodsImpl obj = new BOLMethodsImpl();
+
+        return obj.RegisterUser(app);
+
+    }
+
     @WebMethod(operationName = "RegisterAdmin")
     public int RegisterAdmin(@WebParam(name = "adminObj") Admin admin) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.RegisterAdmin(admin) ;
-        
+
+        return obj.RegisterAdmin(admin);
+
     }
-   
+
     @WebMethod(operationName = "checkUserJob")
-    public boolean checkUserJob(@WebParam(name = "jobObj")Job job, @WebParam(name = "appObj")Applicants app) {
+    public boolean checkUserJob(@WebParam(name = "jobObj") Job job, @WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.checkUserJob(job,app) ;
-        
+
+        return obj.checkUserJob(job, app);
+
     }
-    
+
     @WebMethod(operationName = "deleteAdmin")
     public int deleteAdmin(@WebParam(name = "adminObj") Admin admin) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.deleteAdmins(admin) ;
-        
+
+        return obj.deleteAdmins(admin);
+
     }
-    
+
     @WebMethod(operationName = "deleteUser")
     public int deleteUser(@WebParam(name = "userObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.deleteUsers(app) ;
-        
+
+        return obj.deleteUsers(app);
+
     }
-    
+
     @WebMethod(operationName = "LoginUser")
     public String LoginUser(@WebParam(name = "userObj") Users app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.LoginUser(app) ;
-        
+
+        return obj.LoginUser(app);
+
     }
-    
-   
-    
+
     @WebMethod(operationName = "addSkills")
     public int addSkills(@WebParam(name = "skillObj") Skills skill) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.addSkills(skill) ;
-        
+
+        return obj.addSkills(skill);
+
     }
-    
-     @WebMethod(operationName = "addExperience")
+
+    @WebMethod(operationName = "addExperience")
     public int addExperience(@WebParam(name = "expObj") Experience exp) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.addExperience(exp) ;
-        
+
+        return obj.addExperience(exp);
+
     }
-    
-      @WebMethod(operationName = "addQualifications")
+
+    @WebMethod(operationName = "addQualifications")
     public int addQualifications(@WebParam(name = "quaObj") Qualifications qualification) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.addQualifications(qualification) ;
-        
+
+        return obj.addQualifications(qualification);
+
     }
-    
-         @WebMethod(operationName = "addJob")
+
+    @WebMethod(operationName = "addJob")
     public int addJob(@WebParam(name = "jobObj") Job job) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.addJob(job) ;
-        
+
+        return obj.addJob(job);
+
     }
-    
-          @WebMethod(operationName = "updateSkills")
+
+    @WebMethod(operationName = "updateSkills")
     public int updateSkills(@WebParam(name = "skillObj") Skills skill) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.updateSkills(skill) ;
-        
+
+        return obj.updateSkills(skill);
+
     }
-    
-            @WebMethod(operationName = "updateExperience")
+
+    @WebMethod(operationName = "updateExperience")
     public int updateExperience(@WebParam(name = "expObj") Experience exp) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.updateExperience(exp) ;
-        
+
+        return obj.updateExperience(exp);
+
     }
-    
-              @WebMethod(operationName = "updateQualifications")
+
+    @WebMethod(operationName = "updateQualifications")
     public int updateQualifications(@WebParam(name = "quaObj") Qualifications qualification) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.updateQualifications(qualification) ;
-        
+
+        return obj.updateQualifications(qualification);
+
     }
-    
-           @WebMethod(operationName = "getApplicants")
+
+    @WebMethod(operationName = "getApplicants")
     public ArrayList<Applicants> getApplicants(@WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getApplicants(app) ;
-        
+
+        return obj.getApplicants(app);
+
     }
-    
-      
-           @WebMethod(operationName = "getJobInfo")
+
+    @WebMethod(operationName = "getJobInfo")
     public ArrayList<Job> getJobInfo(@WebParam(name = "appObj") Job job) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getJobInfo(job) ;
-        
+
+        return obj.getJobInfo(job);
+
     }
-    
-            @WebMethod(operationName = "getAdminInfo")
+
+    @WebMethod(operationName = "getAdminInfo")
     public ArrayList<Admin> getAdminInfo(@WebParam(name = "adminObj") Admin admin) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getAdminInfo(admin) ;
-        
+
+        return obj.getAdminInfo(admin);
+
     }
-    
-             @WebMethod(operationName = "getUserJobInfo")
+
+    @WebMethod(operationName = "getUserJobInfo")
     public ArrayList<Job> getUserJobInfo(@WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getUserJobInfo(app) ;
-        
+
+        return obj.getUserJobInfo(app);
+
     }
-    
-               @WebMethod(operationName = "getUserEvaluationAll")
+
+    @WebMethod(operationName = "getUserEvaluationAll")
     public ArrayList<Job> getUserEvaluationAll() {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getUserEvaluationAll() ;
-        
+
+        return obj.getUserEvaluationAll();
+
     }
-    
-               @WebMethod(operationName = "getSkillInfo")
+
+    @WebMethod(operationName = "getSkillInfo")
     public ArrayList<Skills> getSkillInfo(@WebParam(name = "skillObj") Skills skill) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getSkillInfo(skill) ;
-        
+
+        return obj.getSkillInfo(skill);
+
     }
-                @WebMethod(operationName = "getExpInfo")
+
+    @WebMethod(operationName = "getExpInfo")
     public ArrayList<Experience> getExpInfo(@WebParam(name = "expObj") Experience exp) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getExpInfo(exp) ;
-        
+
+        return obj.getExpInfo(exp);
+
     }
-                    @WebMethod(operationName = "getQualificationsInfo")
+
+    @WebMethod(operationName = "getQualificationsInfo")
     public ArrayList<Qualifications> getQualificationsInfo(@WebParam(name = "qualificationObj") Qualifications qualification) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getQualificationsInfo(qualification) ;
-        
+
+        return obj.getQualificationsInfo(qualification);
+
     }
-                  @WebMethod(operationName = "getApplicantSkills")
+
+    @WebMethod(operationName = "getApplicantSkills")
     public ArrayList<Skills> getApplicantSkills(@WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getApplicantSkills(app) ;
-        
+
+        return obj.getApplicantSkills(app);
+
     }
-                   @WebMethod(operationName = "getApplicantExp")
+
+    @WebMethod(operationName = "getApplicantExp")
     public ArrayList<Experience> getApplicantExp(@WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getApplicantExp(app) ;
-        
+
+        return obj.getApplicantExp(app);
+
     }
-                    @WebMethod(operationName = "getApplicantQualifications")
+
+    @WebMethod(operationName = "getApplicantQualifications")
     public ArrayList<Qualifications> getApplicantQualifications(@WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getApplicantQualifications(app) ;
-        
+
+        return obj.getApplicantQualifications(app);
+
     }
-                    @WebMethod(operationName = "getAllSkills")
+
+    @WebMethod(operationName = "getAllSkills")
     public ArrayList<Skills> getSkillAll() {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getSkillAll() ;
-        
+
+        return obj.getSkillAll();
+
     }
-                    @WebMethod(operationName = "getExpAll")
+
+    @WebMethod(operationName = "getExpAll")
     public ArrayList<Experience> getExpAll() {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getExpAll() ;
-        
+
+        return obj.getExpAll();
+
     }
-                    @WebMethod(operationName = "getQualificationsAll")
+
+    @WebMethod(operationName = "getQualificationsAll")
     public ArrayList<Qualifications> getQualificationsAll() {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.getQualificationsAll() ;
-        
+
+        return obj.getQualificationsAll();
+
     }
-                      @WebMethod(operationName = "evaluateApplicant")
+
+    @WebMethod(operationName = "evaluateApplicant")
     public int evaluateApplicant(@WebParam(name = "appObj") Applicants app) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.evaluateApplicant(app) ;
-        
+
+        return obj.evaluateApplicant(app);
+
     }
-    
-                       @WebMethod(operationName = "deleteskill")
+
+    @WebMethod(operationName = "deleteskill")
     public int deleteskill(@WebParam(name = "skillObj") Skills skill) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.deleteskill(skill) ;
-        
+
+        return obj.deleteskill(skill);
+
     }
-                          @WebMethod(operationName = "deleteExp")
+
+    @WebMethod(operationName = "deleteExp")
     public int deleteExp(@WebParam(name = "expObj") Experience exp) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.deleteExp(exp) ;
-        
+
+        return obj.deleteExp(exp);
+
     }
-                             @WebMethod(operationName = "deleteQualifications")
+
+    @WebMethod(operationName = "deleteQualifications")
     public int deleteQualifications(@WebParam(name = "qualificationsObj") Qualifications qualifications) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.deleteQualifications(qualifications) ;
-        
+
+        return obj.deleteQualifications(qualifications);
+
     }
-    
-                                 @WebMethod(operationName = "deleteJob")
+
+    @WebMethod(operationName = "deleteJob")
     public int deleteJob(@WebParam(name = "jobObj") Job job) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.deleteJob(job) ;
-        
+
+        return obj.deleteJob(job);
+
     }
-                                    @WebMethod(operationName = "addUserInformation")
-    public int addUserInformation(@WebParam(name = "appObj") Applicants app,@WebParam(name = "jobObj") Job job,@WebParam(name = "qualificationsObj") Qualifications qua,@WebParam(name = "expObj") Experience exp,@WebParam(name = "skillObj") Skills skill) {
+
+    @WebMethod(operationName = "addUserInformation")
+    public int addUserInformation(@WebParam(name = "appObj") Applicants app, @WebParam(name = "jobObj") Job job, @WebParam(name = "qualificationsObj") Qualifications qua, @WebParam(name = "expObj") Experience exp, @WebParam(name = "skillObj") Skills skill) {
         BOLMethodsImpl obj = new BOLMethodsImpl();
-        
-        return obj.addUserInformation( app,  job,  qua,  exp, skill) ;
-        
+
+        return obj.addUserInformation(app, job, qua, exp, skill);
+
     }
 }
