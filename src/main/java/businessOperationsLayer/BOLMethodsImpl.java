@@ -561,6 +561,7 @@ public class BOLMethodsImpl implements BOLMethods{
 		log.debug("Experience + Qualifications Neural Network Flag set to False ");
 			if(b.trainAndSaveModel()==1)
                         {
+                            result=1;
 				//flagQE = true;
 				log.debug("Experience + Qualifications Neural Network Flag set to True ");
 			}
@@ -751,6 +752,49 @@ public class BOLMethodsImpl implements BOLMethods{
 		} catch (SQLException e) {
 			log.debug("failed to if user has already applied for the same job",e);
 		}
+		return response;
+	}
+
+
+	public int evaluateAllApplicants() {
+		
+		int response = 0 ;
+		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
+		BOLMethodsImpl bl = new BOLMethodsImpl();
+		ResultSet rs = db.getUserEvaluationAll();
+		try {
+			while(rs.next()){
+				Applicants app = new Applicants();
+				app.setAppID(rs.getInt("id"));
+			double skillScore = 0.0;
+			double expQuaScore = 0.0;
+			double finalScore = 0.0;
+			NNQualificationsAndExperienceImpl expQua = new NNQualificationsAndExperienceImpl();
+			expQuaScore= expQua.loadAndEvaluateModel(app);
+			NNSkillModelImpl skillNN = new NNSkillModelImpl();
+			skillScore=skillNN.loadAndEvaluateModel(app);
+			
+			finalScore = skillScore + expQuaScore;
+			
+			Job j = new Job();
+			j.setExpQuaScore(expQuaScore);
+			j.setSkillScore(skillScore);
+			j.setJobid(1);
+			j.setFinalScore(finalScore);
+			
+			DatabaseMethodsImpl dbInstance = new DatabaseMethodsImpl();
+			if(dbInstance.updateEvaluatedApplicant(app, j)==1){
+				response+=1;
+			}
+			}
+		} catch (SQLException e) {
+			log.debug("Applicant Re-Evaluation failed ",e);
+		}
+		log.debug("Applicant Evaluated");
+		
+		
+		
+		
 		return response;
 	}
 

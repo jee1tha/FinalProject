@@ -680,7 +680,34 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 
 		return results;
 	}
+	public int updateEvaluatedApplicant(Applicants app,Job job){
+		int result = 0;
+		
+		DBHandler newDb = new DBHandler();
 
+		// Creating object to get the database connection method
+		
+		try {
+
+			String query = "UPDATE `ingrow`.`userjob` SET `eligibilityFinal` = '"+job.getFinalScore()+"',`skillScore` = '"+job.getSkillScore()+"',`expQuaScore` = '"+job.getExpQuaScore()+"'WHERE `id` = '"+app.getAppID()+"' AND `jid` = '"+job.getJobid()+"';";
+			try {
+
+				result = newDb.insert(query);
+
+				log.debug("Update user job  query executed");
+
+			} catch (Exception e) {
+
+				log.debug("Update user job query failed : ", e);
+			}
+
+		} catch (Exception e) {
+
+			log.debug("Update user job failed : ", e);
+
+		}
+		return result;
+	}
 	public int updateSkills(Skills skill) {
 		
 		int result = 0;
