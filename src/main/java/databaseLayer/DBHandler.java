@@ -44,7 +44,7 @@ public class DBHandler {
             Connection conn = SingletonDB.getInstance();
             Statement st = conn.createStatement();
             ResultSet result = st.executeQuery(query);
-            
+             
             return result;
         } catch (Exception e) {
             return null;

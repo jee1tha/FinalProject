@@ -173,6 +173,7 @@ public class BOLMethodsImpl implements BOLMethods{
 				ap.setUsername(rs.getString("username"));
 				
 			appArray.add(ap) ;
+			log.debug("Get applicants  ");
 			}
 		} catch (SQLException e) {
 			

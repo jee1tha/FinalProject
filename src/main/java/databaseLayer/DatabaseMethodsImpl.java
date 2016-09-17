@@ -1,8 +1,10 @@
 package databaseLayer;
 
+import com.sun.rowset.CachedRowSetImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
 
 import org.apache.log4j.Logger;
 
@@ -135,7 +137,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			try {
 
 				result = newDb.insert(query);
-
+                              
 				log.debug("insert admin query executed");
 
 			} catch (Exception e) {
@@ -203,7 +205,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 			try {
 
 				results = newDb.getdata(query);
-
+              
 				log.debug("get users query executed");
 
 			} catch (Exception e) {
