@@ -63,7 +63,7 @@ public interface BOLMethods {
 	
 	public ArrayList<Qualifications> getApplicantQualifications(Applicants app);
 	
-public ArrayList<Skills> getSkillAll();
+	public ArrayList<Skills> getSkillAll();
 	
 	public ArrayList<Experience> getExpAll();
 	

@@ -127,9 +127,14 @@ public class DEMOSTRATION_CLASS {
 	 
 	 n.addUserExperience(ap, a);*/
  
-     for(int i = 0; i< n.getSkillAll().size()  ; i++){
+  /*   for(int i = 0; i< n.getSkillAll().size()  ; i++){
     	 System.out.println(n.getSkillAll().get(i).getSkill());
-     }
-}
+     }*/
  
+ int x = 1;
+	String textboxname = "txtSkill" + x;
+	
+	System.out.println(textboxname);
+}
+	
 }
