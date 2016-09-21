@@ -126,7 +126,7 @@ public class NNQualificationsAndExperienceImpl implements NNModels {
              */
 
         } catch (SQLException e) {
-            log.debug("Failed to retrieve qualifications eligible");
+            log.debug("Failed to retrieve qualifications eligible",e);
         }
 
         int z = 0;
@@ -249,7 +249,7 @@ public class NNQualificationsAndExperienceImpl implements NNModels {
                 System.out.println("Epoch #" + epoch + " Error:" + train.getError());
                 epoch++;
 
-            } while (train.getError() > 0.9);
+            } while (train.getError() > 0.2);
 
             double e = networkSkills.calculateError(trainingSetQualifcation);
             System.out.println("Network qualifcations trained to error :" + e);
