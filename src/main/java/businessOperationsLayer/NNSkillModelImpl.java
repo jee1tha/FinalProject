@@ -29,17 +29,7 @@ public class NNSkillModelImpl implements NNModels {
 
     private static final Logger log = Logger.getLogger(NNSkillModelImpl.class);
 
-    public static void main(String[] args) {
 
-        NNSkillModelImpl g = new NNSkillModelImpl();
-        DatabaseMethodsImpl d = new DatabaseMethodsImpl();
-        Applicants aa = new Applicants();
-        aa.setAppID(3);
-
-        // g.trainAndSaveModel();
-        System.out.println("Network Skills output: " + g.loadAndEvaluateModel(aa));
-
-    }
 
     public int trainAndSaveModel() {
 

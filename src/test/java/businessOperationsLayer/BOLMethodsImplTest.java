@@ -423,8 +423,20 @@ public class BOLMethodsImplTest {
         assertEquals(expResult, result);
      
     }
-   
-   
+    @Test
+    public void testXEmailClient() {
+        System.out.println("Email Client");
+        EmailClient instance = new EmailClient();
+    	Applicants s = new Applicants();
+    	s.setName("Sherlock Homes");
+    	Job j = new Job();
+    	j.setJobid(4);
+        int expResult = 1;
+        int result = instance.sendEmail(s,j);
+        assertEquals(expResult, result);
+     
+    }
+	
     
     
 }

@@ -737,6 +737,8 @@ public class BOLMethodsImpl implements BOLMethods{
 		r=r + b.addUserQualifications( app,  qua);
 		r=r + b.addUserExperience( app,  exp);
 		r=r + b.evaluateApplicant(app);
+		EmailClient email = new EmailClient();
+		email.sendEmail(app, job);
 		return r;
 	}
 
@@ -761,7 +763,7 @@ public class BOLMethodsImpl implements BOLMethods{
 		
 		int response = 0 ;
 		DatabaseMethodsImpl db = new DatabaseMethodsImpl();
-		BOLMethodsImpl bl = new BOLMethodsImpl();
+
 		ResultSet rs = db.getUserEvaluationAll();
 		try {
 			while(rs.next()){
