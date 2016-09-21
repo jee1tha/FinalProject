@@ -428,7 +428,7 @@ public class BOLMethodsImplTest {
         System.out.println("Email Client");
         EmailClient instance = new EmailClient();
     	Applicants s = new Applicants();
-    	s.setName("Sherlock Homes");
+    	s.setName("TEST EMAIL");
     	Job j = new Job();
     	j.setJobid(4);
         int expResult = 1;
