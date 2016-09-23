@@ -55,7 +55,7 @@ public class BOLMethodsImpl implements BOLMethods{
 		
 		try {
 			boolean z = rs.next() ;
-			if(rs.next()==false){
+			if(z==false){
 				result = db.addSkills(skill);
 				log.debug("New Skill Added" );
 			}

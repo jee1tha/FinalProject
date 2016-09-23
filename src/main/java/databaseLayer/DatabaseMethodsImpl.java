@@ -604,7 +604,7 @@ public class DatabaseMethodsImpl implements DatabaseMethods {
 				query = "Select * from  `ingrow`.`experience` WHERE post = '"+ exp.getPost() 
 						+"' AND organization = '"+exp.getOrganization()+"'";
 			}
-			if (exp.getPost()== null && exp.getOrganization() == null && exp.getExeligibility() == false) {
+			if (exp.getPost()== null && exp.getOrganization() == null && exp.getExeligibility() == false && exp.getExpid() == 0) {
 				query = "Select * from  `ingrow`.`experience` WHERE exeligibility = '"+ l+"' ";
 			}
 			

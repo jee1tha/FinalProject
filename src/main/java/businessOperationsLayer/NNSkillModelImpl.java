@@ -30,7 +30,10 @@ public class NNSkillModelImpl implements NNModels {
     private static final Logger log = Logger.getLogger(NNSkillModelImpl.class);
 
 
-
+public static void main(String[] args) {
+	NNSkillModelImpl sk = new NNSkillModelImpl();
+	sk.trainAndSaveModel();
+}
     public int trainAndSaveModel() {
 
         DatabaseMethodsImpl db = new DatabaseMethodsImpl();
@@ -140,7 +143,7 @@ public class NNSkillModelImpl implements NNModels {
                 System.out.println("Epoch #" + epoch + " Error:" + train.getError());
                 epoch++;
 
-            } while (train.getError() > 0.5);
+            } while (train.getError() > 0.001);
 
             double e = networkSkills.calculateError(trainingSet);
             System.out.println("Network Skills trained to error :" + e);

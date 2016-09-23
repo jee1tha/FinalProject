@@ -30,11 +30,11 @@ public class NNQualificationsAndExperienceImpl implements NNModels {
     public static void main(String[] args) {
         NNQualificationsAndExperienceImpl b = new NNQualificationsAndExperienceImpl();
 
-        //b.trainAndSaveModel();
-        Applicants app = new Applicants();
-        app.setAppID(6);
+        b.trainAndSaveModel();
+        //  Applicants app = new Applicants();
+        //   app.setAppID(6);
 
-        System.out.println(b.loadAndEvaluateModel(app));
+        //   System.out.println(b.loadAndEvaluateModel(app));
     }
 
     public int trainAndSaveModel() {
